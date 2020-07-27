@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页</title>
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
+    <script src="../js/vue.js"></script>
+    <script src="../plugins/elementui/index.js"></script>
+</head>
+<body>
+<div id="app">
+<!--  绑定数据  -->
+    <span class="demonstration">完整功能</span>
+<!--  size-change 每页大小变更时触发，调用handleSizeChange 方法
+  current-change: 页码变更触发   handleCurrentChange
+  current-page: 当前页码
+  page-sizes： 每页大小的下拉列表选择框
+  page-size: 每页大小, 数值必须在page-sizes存在
+  layout: 分页组件显示哪些内容
+  total: 总记录数
+-->
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[100, 200, 300, 400]"
+            :page-size="300"
+            layout="total, prev, pager, next, jumper"
+            :total="400">
+    </el-pagination>
+</div>
+<script>
+    var vue = new Vue({
+        el: '#app',
+        methods: {
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            }
+        },
+        data() {
+            return {
+                currentPage4: 4
+            };
+        }
+    });
+</script>
+</body>
+</html>
