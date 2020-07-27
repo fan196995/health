@@ -27,7 +27,7 @@
                 <div class="box">
                     <div class="filter-container">
                         <el-input placeholder="项目编码/项目名称" v-model="pagination.queryString" style="width: 200px;" class="filter-item"></el-input>
-                        <el-button @click="findPage()" class="dalfBut">查询</el-button>
+                        <el-button @click="handleCurrentChange(1)" class="dalfBut">查询</el-button>
                         <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
                     </div>
                     <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
@@ -260,14 +260,12 @@
                 //分页查询
                 findPage() {
                     // 发送请求, 获取数据再绑定到dataList
-                    axios.get('/checkitem/findAll.do').then(res => {
-                        //res.data => result {flag, message, data}
-                        if(res.data.flag){
-                            // 成功
-                            // 绑定数据
-                            this.dataList = res.data.data;
+                    axios.post('/checkitem/findPage.do',this.pagination).then(response=>{
+                        if(response.data.flag){
+                            this.dataList = response.data.data.rows;
+                            this.pagination.total = response.data.data.total;
                         }else{
-                            this.$message.error(res.data.message);
+                            this.$message.error(response.data.message);
                         }
                     })
                 },
@@ -285,9 +283,30 @@
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
+                    //currentPage 切换后的页码
+                    this.pagination.currentPage = currentPage;
+                    this.findPage();
                 },
                 // 删除
                 handleDelete(row) {
+                    var id = row.id;
+                    this.$confirm('此操作将【永久删除】该检查项, 是否继续?', '提示',{
+                        confirmButtonText:'确定',
+                        cancelButtonText:'取消',
+                        type:'warning'
+                    }).then(()=>{
+                        axios.post('/checkitem/deleteById.do?id='+id).then(response=>{
+                            this.$message({
+                                 message:response.data.message,
+                                 type: response.data.flag?"success":"error"
+                            });
+                            if (response.data.flag){
+                                this.findPage();
+                            }
+                        })
+                    }).catch(()=>{
+
+                    });
                 }
             }
         })

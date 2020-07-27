@@ -14,7 +14,24 @@
         )
     </insert>
 
+    <delete id="deleteById" parameterType="int">
+        delete from t_checkitem where id=#{id}
+    </delete>
+
     <select id="findAll" resultType="com.itheima.health.pojo.CheckItem">
         select * From t_checkitem
+    </select>
+
+    <select id="findByCondition" resultType="com.itheima.health.pojo.CheckItem" parameterType="string">
+        select * from t_checkitem
+        <where>
+            <if test="value !=null and value.length>0">
+                code like #{queryString} or name like #{queryString}
+            </if>
+        </where>
+    </select>
+
+    <select id="findCountByCheckItemId" resultType="int" parameterType="int">
+        select count(1) from t_checkgroup_checkitem where checkitem_id=#{id}
     </select>
 </mapper>
