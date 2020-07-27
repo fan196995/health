@@ -21,4 +21,10 @@ public interface CheckItemService {
 
     //删除检查项
     void deleteById(int id) throws HealthException;
+
+    //根据ID查
+    CheckItem findById(int id);
+
+    //修改
+    void update(CheckItem checkItem);
 }

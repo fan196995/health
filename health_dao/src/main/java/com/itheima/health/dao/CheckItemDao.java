@@ -22,4 +22,11 @@ public interface CheckItemDao {
 
     //查询有无检查组
     int findCountByCheckItemId(int id);
+
+    //根据ID查
+    CheckItem findById(int id);
+
+    //修改
+    void update(CheckItem checkItem);
+
 }

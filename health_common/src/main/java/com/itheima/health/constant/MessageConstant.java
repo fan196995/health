@@ -64,4 +64,7 @@ public interface MessageConstant {
     static final String GET_BUSINESS_REPORT_FAIL = "获取运营统计数据失败";
     static final String GET_SETMEAL_LIST_SUCCESS = "查询套餐列表数据成功";
     static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
+    static final String CHECKGROUP_IN_USE = "该检查组已经被套餐使用不能删除";
+    static final String CHECKITEM_IN_USE = "该检查项已经被检查组使用不能删除";
+
 }

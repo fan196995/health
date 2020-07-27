@@ -3,6 +3,7 @@ package com.itheima.health.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.dao.CheckItemDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
@@ -10,6 +11,7 @@ import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.service.CheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -27,6 +29,7 @@ public class CheckItemServiceImpl implements CheckItemService {
     }
 
     @Override
+    @Transactional
     public void add(CheckItem checkItem) {
         checkItemDao.add(checkItem);
     }
@@ -45,12 +48,24 @@ public class CheckItemServiceImpl implements CheckItemService {
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
         //检查项是否有一个或多个检查组使用
         int count = checkItemDao.findCountByCheckItemId(id);
         if (count>0){
-            throw new HealthException("该检查项已经被一个或多个检查组使用,不能删除");
+            throw new HealthException(MessageConstant.CHECKITEM_IN_USE);
         }
         checkItemDao.deleteById(id);
+    }
+
+    @Override
+    public CheckItem findById(int id) {
+        return checkItemDao.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public void update(CheckItem checkItem) {
+        checkItemDao.update(checkItem);
     }
 }

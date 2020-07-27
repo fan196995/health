@@ -231,28 +231,44 @@
             methods: {
                 //编辑
                 handleEdit() {
+                    this.$refs['dataEditForm'].validate((valid) => {
+                        if (valid) {
+                            // 提交请求添加
+                            axios.post('/checkitem/update.do', this.formData).then(res => {
+                                this.$message({
+                                    message: res.data.message,
+                                    type: res.data.flag?"success":"error"
+                                });
+                                if(res.data.flag){
+                                    // 关闭窗口
+                                    this.dialogFormVisible4Edit = false;
+                                    // 刷新列表数据
+                                    this.findPage();
+                                }
+                            })
+                        } else {
+                            return false;
+                        }
+                    });
                 },
                 //添加
                 handleAdd () {
                     this.$refs['dataAddForm'].validate((valid)=>{
-                        if(valid){
-                            //数据校验通过,提交后台
-                            axios.post("/checkitem/add.do",this.formData).then((response=>{
-                                this.dialogFormVisible = false;
-                                if (response.data.flag){
-                                    this.$message({
-                                        message:response.data.message,
-                                        type:'success'
-                                    })
-                                }else {
-                                    this.$message.error(response.data.message);
+                        if (valid) {
+                            // 提交请求添加
+                            axios.post('/checkitem/add.do', this.formData).then(res => {
+                                this.$message({
+                                    message: res.data.message,
+                                    type: res.data.flag?"success":"error"
+                                });
+                                if(res.data.flag){
+                                    // 关闭窗口
+                                    this.dialogFormVisible = false;
+                                    // 刷新列表数据
+                                    this.findPage();
                                 }
-                            })).finally(()=>{
-                                //刷新列表数据
-                                this.findPage();
                             })
-                        }else{
-                            this.$message.error("表单数据校验失败");
+                        } else {
                             return false;
                         }
                     })
@@ -280,6 +296,16 @@
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
+                    this.resetForm();
+                    this.dialogFormVisible4Edit = true;
+                    var id = row.id
+                    axios.get('/checkitem/findById.do?id='+id).then(response=>{
+                        if (response.data.flag){
+                            this.formData = response.data.data;
+                        } else {
+                            this.$message.error(response.data.message);
+                        }
+                    })
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {

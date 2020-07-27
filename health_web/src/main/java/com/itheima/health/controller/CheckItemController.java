@@ -47,5 +47,17 @@ public class CheckItemController {
         return new Result(true,MessageConstant.DELETE_CHECKITEM_SUCCESS);
     }
 
+    @GetMapping(value = "/findById")
+    public Result findById(int id){
+        CheckItem checkItem = checkItemService.findById(id);
+        return new Result(true,MessageConstant.QUERY_CHECKITEM_SUCCESS,checkItem);
+    }
+
+    @PostMapping("/update")
+    public Result update(@RequestBody CheckItem checkItem){
+        checkItemService.update(checkItem);
+        return new Result(true, MessageConstant.EDIT_CHECKITEM_SUCCESS);
+    }
+
 
 }
