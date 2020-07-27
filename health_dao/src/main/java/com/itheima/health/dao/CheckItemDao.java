@@ -9,4 +9,8 @@ public interface CheckItemDao {
 
      //查询所有
     List<CheckItem> findAll();
+
+    //添加检查项
+    void add(CheckItem checkItem);
+
 }

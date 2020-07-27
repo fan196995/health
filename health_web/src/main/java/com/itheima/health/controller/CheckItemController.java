@@ -5,9 +5,7 @@ import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.service.CheckItemService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,11 @@ public class CheckItemController {
         List<CheckItem> list = checkItemService.findAll();
         // 返回页面
         return new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS, list);
+    }
+
+    @PostMapping("/add")
+    public Result add(@RequestBody CheckItem checkItem){
+        checkItemService.add(checkItem);
+        return new Result(true,MessageConstant.ADD_CHECKITEM_SUCCESS);
     }
 }
