@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.itheima.health.pojo.CheckGroup;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author fanbo
  * @date 2020/7/27 20:32
@@ -27,4 +29,14 @@ public interface CheckGroupDao {
 
     //查询有无检查组关系
     int findSetmealCountByCheckGroupId(int id);
+
+    //根据id查
+    CheckGroup findById(int id);
+
+    //修改
+    void update(CheckGroup checkGroup);
+
+    //编辑里根据所选检查组id查询出对应的检查项列表
+    List<Integer> findCheckItemIdsByCheckGroupId(int id);
+
 }

@@ -1,5 +1,8 @@
 package com.itheima.health.pojo;
 
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import java.io.Serializable;
 import java.util.List;
 

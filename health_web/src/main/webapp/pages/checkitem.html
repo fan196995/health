@@ -298,7 +298,7 @@
                 handleUpdate(row) {
                     this.resetForm();
                     this.dialogFormVisible4Edit = true;
-                    var id = row.id
+                    var id = row.id;
                     axios.get('/checkitem/findById.do?id='+id).then(response=>{
                         if (response.data.flag){
                             this.formData = response.data.data;

@@ -15,6 +15,12 @@
         insert into t_checkgroup_checkitem (checkgroup_id,checkitem_id) values(#{checkGroupId},#{checkitemId})
     </insert>
 
+    <update id="update" parameterType="CheckGroup">
+        update t_checkgroup set
+        code=#{code},name=#{name},helpCode=#{helpCode},sex=#{sex},remark=#{remark},attention=#{attention}
+        where id=#{id}
+    </update>
+
     <delete id="deleteCheckGroupCheckItem" parameterType="int">
         delete FROM t_checkgroup_checkitem where checkgroup_id=#{id}
     </delete>
@@ -36,5 +42,13 @@
         select count(1) from t_setmeal_checkgroup where checkgroup_id=#{id}
     </select>
 
+    <select id="findById" resultType="com.itheima.health.pojo.CheckGroup" parameterType="int">
+        select *
+        from t_checkgroup where id=#{id};
+    </select>
+
+    <select id="findCheckItemIdsByCheckGroupId" resultType="java.lang.Integer" parameterType="int">
+        select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id}
+    </select>
 
 </mapper>

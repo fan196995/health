@@ -7,10 +7,9 @@ import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.CheckGroup;
 import com.itheima.health.service.CheckGroupService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -36,6 +35,24 @@ public class CheckGroupController {
     public Result deleteById(int id){
         checkGroupService.deleteById(id);
         return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
+    }
+
+    @GetMapping(value = "/findById")
+    public Result findById(int id){
+        CheckGroup checkGroup = checkGroupService.findById(id);
+        return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroup);
+    }
+
+    @PostMapping(value = "/update")
+    public Result update(@RequestBody CheckGroup checkGroup,Integer[] checkitemIds){
+        checkGroupService.update(checkGroup,checkitemIds);
+        return new Result(true,MessageConstant.EDIT_CHECKGROUP_SUCCESS);
+    }
+
+    @GetMapping(value = "/findCheckItemIdsByCheckGroupId")
+    public Result findCheckItemIdsByCheckGroupId(int id){
+        List<Integer> checkItemIds = checkGroupService.findCheckItemIdsByCheckGroupId(id);
+        return new Result(true,MessageConstant.QUERY_CHECKITEM_SUCCESS,checkItemIds);
     }
 
 
