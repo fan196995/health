@@ -55,5 +55,12 @@ public class CheckGroupController {
         return new Result(true,MessageConstant.QUERY_CHECKITEM_SUCCESS,checkItemIds);
     }
 
+    @GetMapping(value = "/findAll")
+    public Result findAll(){
+        List<CheckGroup> checkGroupList =checkGroupService.findAll();
+        return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroupList);
+    }
+
+
 
 }

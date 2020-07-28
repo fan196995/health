@@ -1,0 +1,48 @@
+package com.itheima.health.service.impl;
+
+import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.itheima.health.dao.SetmealDao;
+import com.itheima.health.entity.PageResult;
+import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.pojo.CheckGroup;
+import com.itheima.health.pojo.Setmeal;
+import com.itheima.health.service.SetmealService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+/**
+ * @author fanbo
+ * @date 2020/7/28 14:30
+ */
+@Service(interfaceClass = SetmealService.class)
+public class SetmealServiceImpl implements SetmealService {
+
+    @Autowired
+    private SetmealDao setmealDao;
+
+    @Override
+    @Transactional
+    public void add(Setmeal setmeal, Integer[] checkgroupIds) {
+        setmealDao.add(setmeal);
+        //设置中间表数据
+        if (checkgroupIds!=null){
+            for (Integer checkgroupId : checkgroupIds) {
+                setmealDao.addSetmealCheckGroup(setmeal.getId(),checkgroupId);
+            }
+        }
+    }
+
+    @Override
+    public PageResult<Setmeal> findPage(QueryPageBean queryPageBean) {
+        PageHelper.startPage(queryPageBean.getCurrentPage(),queryPageBean.getPageSize());
+        if (!StringUtils.isEmpty(queryPageBean.getQueryString())){
+            queryPageBean.setQueryString("%"+queryPageBean.getQueryString()+"%");
+        }
+        Page<Setmeal> page = setmealDao.findByCondition(queryPageBean.getQueryString());
+        PageResult<Setmeal> pageResult = new PageResult<>(page.getTotal(),page.getResult());
+        return pageResult;
+    }
+}

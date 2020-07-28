@@ -76,7 +76,6 @@ public class CheckGroupServiceImpl implements CheckGroupService {
 
         //删除旧的中间表数据
         checkGroupDao.deleteCheckGroupCheckItem(checkGroupId);
-
         //设置新的中间表数据
         if (checkitemIds!=null){
             for (Integer checkitemId : checkitemIds) {
@@ -88,6 +87,11 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     @Override
     public List<Integer> findCheckItemIdsByCheckGroupId(int id) {
         return checkGroupDao.findCheckItemIdsByCheckGroupId(id);
+    }
+
+    @Override
+    public List<CheckGroup> findAll() {
+        return checkGroupDao.findAll();
     }
 
 

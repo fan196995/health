@@ -58,6 +58,4 @@ public class CheckItemController {
         checkItemService.update(checkItem);
         return new Result(true, MessageConstant.EDIT_CHECKITEM_SUCCESS);
     }
-
-
 }

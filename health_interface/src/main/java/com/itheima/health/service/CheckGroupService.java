@@ -30,4 +30,9 @@ public interface CheckGroupService {
 
     //编辑里根据所选检查组id查询出对应的检查项列表
     List<Integer> findCheckItemIdsByCheckGroupId(int id);
+
+    //查询所有
+    List<CheckGroup> findAll();
+
+
 }
