@@ -11,16 +11,14 @@ import com.itheima.health.service.SetmealService;
 import com.itheima.health.utils.QiNiuUtils;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -62,7 +60,6 @@ public class SetmealController {
                 jedis.close();
             }
         }
-
         Map<String,String> dataMap = new HashMap<>();
         dataMap.put("imgName",imageName);
         dataMap.put("domain",QiNiuUtils.DOMAIN);
@@ -84,21 +81,19 @@ public class SetmealController {
         PageResult<Setmeal> pageResult = setmealService.findPage(queryPageBean);
         return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,pageResult);
     }
-/*
 
     @PostMapping("/update")
     public Result update(@RequestBody Setmeal setmeal,Integer[] checkgroupIds){
         Jedis jedis = jedisPool.getResource();
         Setmeal old = setmealService.findById(setmeal.getId());
         setmealService.update(setmeal,checkgroupIds);
-//        Srem 命令用于移除集合中的一个或多个成员元素，不存在的成员元素会被忽略。
+        //srem 命令用于移除集合中的一个或多个成员元素，不存在的成员元素会被忽略。
         //先删除再添加
         jedis.srem(RedisConstant.SETMEAL_PIC_DB_RESOURCES,old.getImg());
         jedis.sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES,setmeal.getImg());
         jedis.close();
         return new Result(true, MessageConstant.EDIT_SETMEAL_SUCCESS);
     }
-*/
 
     @PostMapping(value = "/deleteById")
     public Result deleteById(int id){
@@ -106,10 +101,26 @@ public class SetmealController {
         setmealService.deleteById(id);
         Jedis jedis =jedisPool.getResource();
 
-        //查询七牛云所有照片
-
         jedis.srem(RedisConstant.SETMEAL_PIC_DB_RESOURCES,setmeal.getImg());
         jedis.close();
         return new Result(true, MessageConstant.DELETE_SETMEAL_SUCCESS);
+    }
+
+    @GetMapping(value = "/findById")
+    public Result findById(int id){
+        Setmeal setmeal = setmealService.findById(id);
+        String img = setmeal.getImg();
+        Map<String,Object> map = new HashMap<>();
+        //formData
+        map.put("setmeal",setmeal);
+        //imageUrl
+        map.put("imageUrl",QiNiuUtils.DOMAIN+img);
+        return new Result(true,MessageConstant.QUERY_SETMEAL_SUCCESS,map);
+    }
+
+    @GetMapping(value = "/findCheckGroupIdsBySetmealId")
+    public Result findCheckGroupIdsBySetmealId(int id){
+        List<Integer> checkGroupIds = setmealService.findCheckGroupIdsBySetmealId(id);
+        return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroupIds);
     }
 }

@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @author fanbo
  * @date 2020/7/28 14:30
@@ -62,5 +64,23 @@ public class SetmealServiceImpl implements SetmealService {
         }
         setmealDao.deleteSetmealCheckGroup(id);
         setmealDao.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void update(Setmeal setmeal, Integer[] checkgroupIds) {
+        setmealDao.update(setmeal);
+        //先删除再添加
+        setmealDao.deleteSetmealCheckGroup(setmeal.getId());
+        if (checkgroupIds!=null){
+            for (Integer checkgroupId : checkgroupIds) {
+                setmealDao.addSetmealCheckGroup(setmeal.getId(),checkgroupId);
+            }
+        }
+    }
+
+    @Override
+    public List<Integer> findCheckGroupIdsBySetmealId(int id) {
+        return setmealDao.findCheckGroupIdsBySetmealId(id);
     }
 }

@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.itheima.health.pojo.Setmeal;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author fanbo
  * @date 2020/7/28 14:34
@@ -30,4 +32,8 @@ public interface SetmealDao {
 
     //删除
     void deleteById(int id);
+
+    void update(Setmeal setmeal);
+
+    List<Integer> findCheckGroupIdsBySetmealId(int id);
 }

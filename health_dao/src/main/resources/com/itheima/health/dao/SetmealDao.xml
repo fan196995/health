@@ -18,6 +18,12 @@
         values (#{setmealId},#{checkgroupId})
     </insert>
 
+    <update id="update" parameterType="Setmeal">
+        update t_setmeal set
+        name=#{name},code=#{code},helpCode=#{helpCode},sex=#{sex},age=#{age},price=#{price},remark=#{remark},attention=#{attention},img=#{img}
+        where id=#{id}
+    </update>
+
     <select id="findByCondition" resultType="com.itheima.health.pojo.Setmeal">
         select * from t_setmeal
         <where>
@@ -33,6 +39,10 @@
 
     <select id="findOrderCountBySetmealId" resultType="java.lang.Integer" parameterType="int">
         select count(1) from t_order where setmeal_id=#{id}
+    </select>
+
+    <select id="findCheckGroupIdsBySetmealId" resultType="java.lang.Integer" parameterType="int">
+        select checkgroup_id from t_setmeal_checkgroup where setmeal_id=#{id};
     </select>
 
     <delete id="deleteSetmealCheckGroup" parameterType="int">

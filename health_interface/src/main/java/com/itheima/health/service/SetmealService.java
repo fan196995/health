@@ -5,6 +5,8 @@ import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.Setmeal;
 
+import java.util.List;
+
 /**
  * @author fanbo
  * @date 2020/7/28 14:29
@@ -20,4 +22,9 @@ public interface SetmealService {
     Setmeal findById(int id);
 
     void deleteById(int id) throws HealthException;
+
+    void update(Setmeal setmeal, Integer[] checkgroupIds);
+
+    //查询中间表
+    List<Integer> findCheckGroupIdsBySetmealId(int id);
 }
