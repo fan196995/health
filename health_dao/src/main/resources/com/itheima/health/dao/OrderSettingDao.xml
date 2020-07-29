@@ -15,7 +15,16 @@
         update t_ordersetting set number=#{number}  where orderDate=#{orderDate}
     </update>
 
+    <update id="editNumberByDate" parameterType="OrderSetting">
+        update t_ordersetting set
+        number=#{number} where orderDate=#{orderDate}
+    </update>
+
     <select id="findByOrderDate" resultType="com.itheima.health.pojo.OrderSetting" parameterType="date">
         select * from t_ordersetting where orderDate=#{orderDate}
+    </select>
+
+    <select id="getOrderSettingByMonth" parameterType="hashmap" resultType="com.itheima.health.pojo.OrderSetting">
+        select * from t_ordersetting where orderDate between #{dateBegin} and #{dateEnd}
     </select>
 </mapper>

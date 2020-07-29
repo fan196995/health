@@ -6,14 +6,13 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.OrderSetting;
 import com.itheima.health.service.OrderSettingService;
 import com.itheima.health.utils.POIUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fanbo
@@ -47,6 +46,29 @@ public class OrderSettingController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.IMPORT_ORDERSETTING_FAIL);
+        }
+    }
+
+    @GetMapping(value = "/getOrderSettingByMonth")
+    public Result getOrderSettingByMonth(String date){
+        try {
+            //TODO List<Map> 使用原因
+            List<Map> list = orderSettingService.getOrderSettingByMonth(date);
+            return new Result(true,MessageConstant.GET_ORDERSETTING_SUCCESS,list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,MessageConstant.GET_ORDERSETTING_FAIL);
+        }
+    }
+
+    @PostMapping(value = "/editNumberByDate")
+    public Result editNumberByDate(@RequestBody OrderSetting orderSetting){
+        try{
+            orderSettingService.editNumberByDate(orderSetting);
+            return new Result(true,MessageConstant.ORDERSETTING_SUCCESS);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false,MessageConstant.ORDERSETTING_FAIL);
         }
     }
 }

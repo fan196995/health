@@ -16,7 +16,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-
 /**
  * @author fanbo
  * @date 2020/7/27 20:25
@@ -71,6 +70,7 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     @Override
     @Transactional
     public void update(CheckGroup checkGroup,Integer[] checkitemIds) {
+        //先更新
         checkGroupDao.update(checkGroup);
         Integer checkGroupId = checkGroup.getId();
 
