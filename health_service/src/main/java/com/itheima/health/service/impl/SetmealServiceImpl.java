@@ -3,10 +3,11 @@ package com.itheima.health.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.dao.SetmealDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
-import com.itheima.health.pojo.CheckGroup;
+import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,22 @@ public class SetmealServiceImpl implements SetmealService {
         Page<Setmeal> page = setmealDao.findByCondition(queryPageBean.getQueryString());
         PageResult<Setmeal> pageResult = new PageResult<>(page.getTotal(),page.getResult());
         return pageResult;
+    }
+
+    @Override
+    public Setmeal findById(int id) {
+        return setmealDao.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(int id) {
+        //是否被预约
+        int count = setmealDao.findOrderCountBySetmealId(id);
+        if (count>0){
+            throw new HealthException(MessageConstant.SETMEAL_IN_USE);
+        }
+        setmealDao.deleteSetmealCheckGroup(id);
+        setmealDao.deleteById(id);
     }
 }

@@ -19,4 +19,15 @@ public interface SetmealDao {
     //按条件
     Page<Setmeal> findByCondition(String queryString);
 
+    //根据id查询
+    Setmeal findById(int id);
+
+    //查询是否有预约
+    int findOrderCountBySetmealId(int id);
+
+    //删除中间表
+    void deleteSetmealCheckGroup(int id);
+
+    //删除
+    void deleteById(int id);
 }

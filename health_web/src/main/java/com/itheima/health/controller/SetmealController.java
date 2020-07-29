@@ -84,8 +84,9 @@ public class SetmealController {
         PageResult<Setmeal> pageResult = setmealService.findPage(queryPageBean);
         return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,pageResult);
     }
+/*
 
-   /* @PostMapping("/update")
+    @PostMapping("/update")
     public Result update(@RequestBody Setmeal setmeal,Integer[] checkgroupIds){
         Jedis jedis = jedisPool.getResource();
         Setmeal old = setmealService.findById(setmeal.getId());
@@ -97,13 +98,18 @@ public class SetmealController {
         jedis.close();
         return new Result(true, MessageConstant.EDIT_SETMEAL_SUCCESS);
     }
+*/
 
     @PostMapping(value = "/deleteById")
     public Result deleteById(int id){
         Setmeal setmeal =setmealService.findById(id);
         setmealService.deleteById(id);
         Jedis jedis =jedisPool.getResource();
+
+        //查询七牛云所有照片
+
         jedis.srem(RedisConstant.SETMEAL_PIC_DB_RESOURCES,setmeal.getImg());
+        jedis.close();
         return new Result(true, MessageConstant.DELETE_SETMEAL_SUCCESS);
-    }*/
+    }
 }

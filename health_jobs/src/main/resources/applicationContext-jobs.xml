@@ -23,8 +23,8 @@
     <!--  触发器  -->
     <bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 <!--          测试-->
-        <property name="cronExpression" value="0/15 * * * * ?"/>
-<!--        <property name="cronExpression" value="0 0 4 * * ?"/>-->
+<!--        <property name="cronExpression" value="0/30 * * * * ?"/>-->
+        <property name="cronExpression" value="0 0 4 * * ?"/>
         <property name="jobDetail" ref="jobDetail"/>
     </bean>
     <!--  调度容器  -->

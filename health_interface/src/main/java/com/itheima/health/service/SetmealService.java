@@ -2,6 +2,7 @@ package com.itheima.health.service;
 
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.Setmeal;
 
 /**
@@ -16,4 +17,7 @@ public interface SetmealService {
     //分页
     PageResult<Setmeal> findPage(QueryPageBean queryPageBean);
 
+    Setmeal findById(int id);
+
+    void deleteById(int id) throws HealthException;
 }

@@ -22,15 +22,17 @@ public class ClearImgJob {
     private JedisPool jedisPool;
 
     public void clearImg(){
-        System.out.println("===================="+
-                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         Jedis jedis = jedisPool.getResource();
         //垃圾图片=七牛云所有图片-数据库图片
-//        Sdiff 命令返回第一个集合与其他集合之间的差异，也可以认为说第一个集合中独有的元素
+        // Sdiff 命令返回第一个集合与其他集合之间的差异，也可以认为说第一个集合中独有的元素
         Set<String> sdiff = jedis.sdiff(RedisConstant.SETMEAL_PIC_RESOURCES, RedisConstant.SETMEAL_PIC_DB_RESOURCES);
+
         //set转换为string数组
         QiNiuUtils.removeFiles(sdiff.toArray(new String[]{}));
+
         // DEL 命令用于删除已存在的键。不存在的 key 会被忽略。
         jedis.del(RedisConstant.SETMEAL_PIC_RESOURCES,RedisConstant.SETMEAL_PIC_DB_RESOURCES);
+        System.out.println("===================="+
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
     }
 }

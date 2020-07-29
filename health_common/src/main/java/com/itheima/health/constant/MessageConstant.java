@@ -68,5 +68,6 @@ public interface MessageConstant {
     static final String CHECKITEM_IN_USE = "该检查项已经被检查组使用不能删除";
     static final String EDIT_SETMEAL_SUCCESS = "编辑套餐成功";
     static final String DELETE_SETMEAL_SUCCESS = "删除套餐成功";
+    static final String SETMEAL_IN_USE = "套餐被预约不能删除";
 
 }
