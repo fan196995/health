@@ -36,4 +36,7 @@ public interface SetmealDao {
     void update(Setmeal setmeal);
 
     List<Integer> findCheckGroupIdsBySetmealId(int id);
+
+    List<Setmeal> findAll();
+
 }

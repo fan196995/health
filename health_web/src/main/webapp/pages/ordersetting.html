@@ -33,7 +33,7 @@
     </div>
     <div class="app-container">
         <div class="box">
-            <div class="box ordersetting">
+            <ul class="box ordersetting">
                 <el-card class="box-card">
                     <div class="boxMain">
                         <el-button style="margin-bottom: 20px;margin-right: 20px" type="primary"
@@ -51,7 +51,7 @@
                         操作说明：请点击"模板下载"按钮获取模板文件，在模板文件中录入预约设置数据后点击"上传文件"按钮上传模板文件。
                     </div>
                 </el-card>
-                <div class="calendar">
+                <ul class="calendar">
                     <!-- 年份 月份 -->
                     <div class="month">
                         <div class="currentdate">
@@ -88,8 +88,7 @@
                                     <!-- 当前月 -->
                                     <div class="everyday" v-if="dayobject.day.getMonth()+1 == currentMonth">
                                         <span class="datenumber">{{dayobject.day.getDate()}}</span>
-
-                                        <!--<template>
+                                        <template>
                                             <template v-for="obj in leftobj">
                                                 <template v-if="obj.date == dayobject.day.getDate()">
                                                     <template v-if="obj.number > obj.reservations">
@@ -107,32 +106,17 @@
                                                     </template>
                                                 </template>
                                             </template>
-                                            <button v-if="dayobject.day > today" @click="handleOrderSet(dayobject.day)" class="orderbtn">设置</button>
-                                        </template>-->
-                                        <template>
-                                            <template v-for="obj in leftobj">
-                                                <template v-if="obj.number > obj.reservations">
-                                                    <div class="usual">
-                                                        <p>可预约{{obj.number}}人</p>
-                                                        <p>已预约{{obj.reservations}}人</p>
-                                                    </div>
-                                                </template>
-                                                <template v-else>
-                                                    <div class="fulled">
-                                                        <p>可预约{{obj.number}}人</p>
-                                                        <p>已预约{{obj.reservations}}人</p>
-                                                        <p>已满</p>
-                                                    </div>
-                                                </template>
-                                            </template>
-                                            <button v-if="dayobject.day > today" @click="handleOrderSet(dayobject.day)" class="orderbtn">设置</button>
+                                            <button v-if="dayobject.day > today" @click="handleOrderSet(dayobject.day)"
+                                                    class="orderbtn">设置
+                                            </button>
                                         </template>
                                     </div>
                                 </template>
                             </li>
                         </ul>
-                </div>
-            </div>
+                    </ul>
+                </ul>
+            </ul>
         </div>
     </div>
 </div>

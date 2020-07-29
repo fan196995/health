@@ -53,7 +53,8 @@ public class OrderSettingServiceImpl implements OrderSettingService {
         List<Map> data = new ArrayList<>();
         for (OrderSetting orderSetting : orderSettingList) {
             Map orderSettingMap = new HashMap();
-            orderSettingMap.put("date",orderSetting.getOrderDate());
+            //orderSetting.getOrderDate().getDate() 返回月份的某一天
+            orderSettingMap.put("date",orderSetting.getOrderDate().getDate());
             orderSettingMap.put("number",orderSetting.getNumber());
             orderSettingMap.put("reservations",orderSetting.getReservations());
             data.add(orderSettingMap);
@@ -65,16 +66,17 @@ public class OrderSettingServiceImpl implements OrderSettingService {
     @Transactional
     public void editNumberByDate(OrderSetting orderSetting) {
         //查询是否有该日期
-        OrderSetting order=orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
-        if (order!=null){
-            if (order.getReservations()>order.getNumber()){
-                throw new HealthException(orderSetting.getOrderDate()+"最大预约数不能低于已预约数");
+        orderSetting=orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
+        int reservations = orderSetting.getReservations();
+        int number = orderSetting.getNumber();
+        if (orderSetting!=null){
+            if (reservations>number){
+                throw new HealthException("最大预约数不能低于已预约数");
             }
             orderSettingDao.editNumberByDate(orderSetting);
         }else {
             orderSettingDao.add(orderSetting);
         }
     }
-
 }
 

@@ -83,4 +83,9 @@ public class SetmealServiceImpl implements SetmealService {
     public List<Integer> findCheckGroupIdsBySetmealId(int id) {
         return setmealDao.findCheckGroupIdsBySetmealId(id);
     }
+
+    @Override
+    public List<Setmeal> findAll() {
+        return setmealDao.findAll();
+    }
 }

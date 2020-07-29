@@ -27,4 +27,8 @@ public interface SetmealService {
 
     //查询中间表
     List<Integer> findCheckGroupIdsBySetmealId(int id);
+
+    List<Setmeal> findAll();
+
+
 }

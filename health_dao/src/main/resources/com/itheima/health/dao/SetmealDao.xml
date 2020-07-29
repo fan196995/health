@@ -45,6 +45,10 @@
         select checkgroup_id from t_setmeal_checkgroup where setmeal_id=#{id};
     </select>
 
+    <select id="findAll" resultType="com.itheima.health.pojo.Setmeal">
+        select * from t_setmeal
+    </select>
+
     <delete id="deleteSetmealCheckGroup" parameterType="int">
         delete from t_setmeal_checkgroup where setmeal_id=#{id}
     </delete>
