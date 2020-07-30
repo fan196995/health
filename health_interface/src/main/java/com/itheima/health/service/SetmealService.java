@@ -30,5 +30,6 @@ public interface SetmealService {
 
     List<Setmeal> findAll();
 
-
+    //前台
+    Setmeal findDetailById(int id);
 }

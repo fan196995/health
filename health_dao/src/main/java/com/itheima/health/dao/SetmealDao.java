@@ -39,4 +39,6 @@ public interface SetmealDao {
 
     List<Setmeal> findAll();
 
+    //前台
+    Setmeal findDetailById(int id);
 }

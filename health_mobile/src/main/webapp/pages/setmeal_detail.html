@@ -91,10 +91,10 @@
             }
         },
         mounted(){
-            axios.post("/setmeal/findById.do?id=" + id).then((response) => {
+            axios.post("/setmeal/findDetailById.do?id=" + id).then((response) => {
                 if(response.data.flag){
                     this.setmeal = response.data.data;
-                    this.imgUrl = 'http://pqjroc654.bkt.clouddn.com/' + this.setmeal.img;
+                    this.imgUrl =  this.setmeal.img;
                 }
             });
         }
