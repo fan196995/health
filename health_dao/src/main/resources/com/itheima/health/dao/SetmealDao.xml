@@ -57,7 +57,7 @@
         delete from t_setmeal where id=#{id}
     </delete>
 
-<!--    前台的套餐查询-->
+<!--    前台的套餐查询  方式一  -->
     <resultMap id="setmealDetailMap" type="Setmeal">
         <id property="id" column="id"></id>
         <result property="name" column="name"></result>
@@ -70,7 +70,7 @@
         <result property="attention" column="attention"></result>
         <result property="img" column="img"></result>
         <collection property="checkGroups" ofType="CheckGroup">
-            <id property="id" column="id"></id>
+            <id property="id" column="checkgroup_id"></id>
             <result property="name" column="checkgroup_name"></result>
             <result property="remark" column="checkgroup_remark"></result>
             <collection property="checkItems" ofType="CheckItem">
@@ -87,5 +87,31 @@
         where s.id=sg.setmeal_id and sg.checkgroup_id=cg.id and cg.id=cc.checkgroup_id and cc.checkitem_id = ci.id
         and s.id=#{id}
     </select>
+
+    <!--    前台的套餐查询  方式二  -->
+    <resultMap id="setmealDetailMap2" type="Setmeal">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="code" column="code"></result>
+        <result property="helpCode" column="helpCode"></result>
+        <result property="sex" column="sex"></result>
+        <result property="age" column="age"></result>
+        <result property="price" column="price"></result>
+        <result property="remark" column="remark"></result>
+        <result property="attention" column="attention"></result>
+        <result property="img" column="img"></result>
+        <collection property="checkGroups" column="id"
+                select="com.itheima.health.dao.CheckGroupDao.findCheckGroupListById">
+        </collection>
+    </resultMap>
+    <select id="findDetailById2" parameterType="int" resultMap="setmealDetailMap2">
+        select * from t_setmeal where id=#{id}
+    </select>
+
+    <!--    前台的套餐查询  方式三  -->
+    <select id="findDetailById3" parameterType="int" resultType="com.itheima.health.pojo.Setmeal">
+
+    </select>
+
 
 </mapper>

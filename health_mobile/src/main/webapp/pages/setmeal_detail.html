@@ -91,12 +91,29 @@
             }
         },
         mounted(){
-            axios.post("/setmeal/findDetailById.do?id=" + id).then((response) => {
+            //方式一
+          /*  axios.post("/setmeal/findDetailById.do?id=" + id).then((response) => {
+                if(response.data.flag){
+                    this.setmeal = response.data.data;
+                    this.imgUrl =  this.setmeal.img;
+                }
+            });*/
+
+            //方式二
+            axios.post("/setmeal/findDetailById2.do?id=" + id).then((response) => {
                 if(response.data.flag){
                     this.setmeal = response.data.data;
                     this.imgUrl =  this.setmeal.img;
                 }
             });
+
+            //方式三
+           /* axios.post("/setmeal/findDetailById3.do?id=" + id).then((response) => {
+                if(response.data.flag){
+                    this.setmeal = response.data.data;
+                    this.imgUrl =  this.setmeal.img;
+                }
+            });*/
         }
     });
 </script>

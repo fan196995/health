@@ -32,10 +32,23 @@ public class SetmealMobileController {
     }
 
     @PostMapping("/findDetailById")
-    public Result findById(int id){
+    public Result findDetailById(int id){
         Setmeal setmeal = setmealService.findDetailById(id);
         setmeal.setImg(QiNiuUtils.DOMAIN+setmeal.getImg());
         return new Result(true,MessageConstant.QUERY_SETMEAL_SUCCESS,setmeal);
     }
 
+    @PostMapping("/findDetailById2")
+    public Result findDetailById2(int id){
+        Setmeal setmeal = setmealService.findDetailById2(id);
+        setmeal.setImg(QiNiuUtils.DOMAIN+setmeal.getImg());
+        return new Result(true,MessageConstant.QUERY_SETMEAL_SUCCESS,setmeal);
+    }
+
+    @PostMapping("/findDetailById3")
+    public Result findDetailById3(int id){
+        Setmeal setmeal = setmealService.findDetailById3(id);
+        setmeal.setImg(QiNiuUtils.DOMAIN+setmeal.getImg());
+        return new Result(true,MessageConstant.QUERY_SETMEAL_SUCCESS,setmeal);
+    }
 }

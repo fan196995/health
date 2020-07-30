@@ -42,4 +42,8 @@ public interface CheckGroupDao {
     //查询所有
     List<CheckGroup> findAll();
 
+    List<CheckGroup> findCheckGroupListById();
+
+
+
 }

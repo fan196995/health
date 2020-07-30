@@ -45,5 +45,11 @@
         select * from t_checkitem where id=#{id}
     </select>
 
+    <!--    前台的套餐查询  方式二  -->
+    <select id="findCheckItemListById" resultType="CheckItem">
+        select * from t_checkitem
+        where id in
+              (select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id})
+    </select>
 
 </mapper>

@@ -32,4 +32,8 @@ public interface SetmealService {
 
     //前台
     Setmeal findDetailById(int id);
+
+    Setmeal findDetailById2(int id);
+
+    Setmeal findDetailById3(int id);
 }

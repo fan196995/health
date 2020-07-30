@@ -29,4 +29,7 @@ public interface CheckItemDao {
     //修改
     void update(CheckItem checkItem);
 
+    List<CheckItem> findCheckItemListById();
+
+
 }

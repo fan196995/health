@@ -55,4 +55,23 @@
         select * from t_checkgroup
     </select>
 
+    <!--    前台的套餐查询  方式二  -->
+    <resultMap id="findByIdResultMap" type="CheckGroup">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="code" column="code"></result>
+        <result property="helpCode" column="helpCode"></result>
+        <result property="sex" column="sex"></result>
+        <result property="remark" column="remark"></result>
+        <result property="attention" column="attention"></result>
+        <collection property="checkItems" column="id"
+                    select="com.itheima.health.dao.CheckItemDao.findCheckItemListById">
+        </collection>
+    </resultMap>
+    <select id="findCheckGroupListById" resultMap="findByIdResultMap">
+        select * from t_checkgroup
+        where id in
+       (select checkgroup_id from t_setmeal_checkgroup where setmeal_id=#{id})
+    </select>
+
 </mapper>
