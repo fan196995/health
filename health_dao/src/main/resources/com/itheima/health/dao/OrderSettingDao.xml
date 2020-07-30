@@ -19,7 +19,9 @@
         select * from t_ordersetting where orderDate=#{orderDate}
     </select>
 
-    <select id="getOrderSettingByMonth" parameterType="hashmap" resultType="com.itheima.health.pojo.OrderSetting">
-        select * from t_ordersetting where orderDate between #{dateBegin} and #{dateEnd}
+    <select id="getOrderSettingByMonth" parameterType="string" resultType="java.util.Map">
+        select DATE_FORMAT(orderDate,'%d')* 1 date, number, reservations
+        from t_ordersetting
+        where orderDate between #{startDate} and #{endDate}
     </select>
 </mapper>

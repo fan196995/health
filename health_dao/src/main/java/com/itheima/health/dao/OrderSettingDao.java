@@ -1,6 +1,7 @@
 package com.itheima.health.dao;
 
 import com.itheima.health.pojo.OrderSetting;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,9 @@ public interface OrderSettingDao {
     void add(OrderSetting orderSetting);
 
     //根据日期查
-    List<OrderSetting> getOrderSettingByMonth(Map map);
+    List<Map<String, Integer>> getOrderSettingByMonth(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+
 
 
 }

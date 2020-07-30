@@ -8,6 +8,7 @@ import com.itheima.health.service.OrderSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,23 +27,31 @@ public class OrderSettingServiceImpl implements OrderSettingService {
     @Override
     @Transactional
     public void add(List<OrderSetting> orderSettingList) {
-        for (OrderSetting orderSetting : orderSettingList) {
-            //查询是否有该日期
-            OrderSetting order=orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
-            if (order!=null){
-                if (order.getReservations()>order.getNumber()){
-                    throw new HealthException(orderSetting.getOrderDate()+"已预约数不能超过可预约数");
+        if (orderSettingList!=null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            for (OrderSetting orderSetting : orderSettingList) {
+                //查询是否有该日期
+                OrderSetting order = orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
+                if (order!=null){
+                    if (order.getReservations()> orderSetting.getNumber()){
+                        throw new HealthException(sdf.format(orderSetting.getOrderDate())+"已预约数不能超过可预约数");
+                    }
+                    orderSettingDao.update(orderSetting);
+                }else {
+                    orderSettingDao.add(orderSetting);
                 }
-                orderSettingDao.update(orderSetting);
-            }else {
-                orderSettingDao.add(orderSetting);
             }
         }
     }
 
     @Override
-    public List<Map> getOrderSettingByMonth(String date) {
-        //dateBegin表示月份开始时间，dateEnd月份结束时间
+    public List<Map<String,Integer>> getOrderSettingByMonth(String date) {
+        String startDate = date + "-01"; // 2020-07-01
+        String endDate = date + "-31"; // 2020-07-31
+        List<Map<String,Integer>> monthDatas = orderSettingDao.getOrderSettingByMonth(startDate, endDate);
+        return monthDatas;
+
+/*        //dateBegin表示月份开始时间，dateEnd月份结束时间
         String dateBegin = date + "-1";//2020-05-1
         String dateEnd = date + "-31";//2020-05-31
         Map map = new HashMap<>();
@@ -50,7 +59,7 @@ public class OrderSettingServiceImpl implements OrderSettingService {
         map.put("dateEnd",dateEnd);
 
         List<OrderSetting> orderSettingList =orderSettingDao.getOrderSettingByMonth(map);
-        List<Map> data = new ArrayList<>();
+        List<Map<String,Integer>> data = new ArrayList<>();
         for (OrderSetting orderSetting : orderSettingList) {
             Map orderSettingMap = new HashMap();
             //orderSetting.getOrderDate().getDate() 返回月份的某一天
@@ -59,17 +68,18 @@ public class OrderSettingServiceImpl implements OrderSettingService {
             orderSettingMap.put("reservations",orderSetting.getReservations());
             data.add(orderSettingMap);
         }
-        return data;
+        return data;*/
     }
 
     @Override
     @Transactional
     public void editNumberByDate(OrderSetting orderSetting) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //查询是否有该日期
         OrderSetting order=orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
         if (order!=null){
-            if (order.getReservations()>order.getNumber()){
-                throw new HealthException(orderSetting.getOrderDate()+"最大预约数不可以低于已经预约的数量");
+            if (order.getReservations()>orderSetting.getNumber()){
+                throw new HealthException(sdf.format(orderSetting.getOrderDate())+"设置的最大预约数不能低于已预约数");
             }
             orderSettingDao.update(orderSetting);
         }else {
