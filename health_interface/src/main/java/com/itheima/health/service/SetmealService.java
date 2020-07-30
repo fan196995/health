@@ -30,10 +30,12 @@ public interface SetmealService {
 
     List<Setmeal> findAll();
 
-    //前台
+    //前台套餐查询 方式一
     Setmeal findDetailById(int id);
 
+    //方式二
     Setmeal findDetailById2(int id);
 
+    //方式三
     Setmeal findDetailById3(int id);
 }

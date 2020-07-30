@@ -24,6 +24,5 @@ public interface OrderSettingDao {
     //根据日期查
     List<OrderSetting> getOrderSettingByMonth(Map map);
 
-    //编辑
-    void editNumberByDate(OrderSetting orderSetting);
+
 }

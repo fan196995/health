@@ -66,14 +66,12 @@ public class OrderSettingServiceImpl implements OrderSettingService {
     @Transactional
     public void editNumberByDate(OrderSetting orderSetting) {
         //查询是否有该日期
-        orderSetting=orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
-        int reservations = orderSetting.getReservations();
-        int number = orderSetting.getNumber();
-        if (orderSetting!=null){
-            if (reservations>number){
-                throw new HealthException("最大预约数不能低于已预约数");
+        OrderSetting order=orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
+        if (order!=null){
+            if (order.getReservations()>order.getNumber()){
+                throw new HealthException(orderSetting.getOrderDate()+"最大预约数不可以低于已经预约的数量");
             }
-            orderSettingDao.editNumberByDate(orderSetting);
+            orderSettingDao.update(orderSetting);
         }else {
             orderSettingDao.add(orderSetting);
         }

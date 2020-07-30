@@ -8,6 +8,8 @@ import com.itheima.health.dao.SetmealDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.exception.HealthException;
+import com.itheima.health.pojo.CheckGroup;
+import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +103,16 @@ public class SetmealServiceImpl implements SetmealService {
 
     @Override
     public Setmeal findDetailById3(int id) {
-        return setmealDao.findDetailById3(id);
+        Setmeal setmeal = setmealDao.findDetailById3(id);
+        //检查组列表
+        List<CheckGroup> checkGroupList= setmealDao.findCheckGroupListBySetmealId(setmeal.getId());
+        for (CheckGroup checkGroup : checkGroupList) {
+            //检查项列表
+            List<CheckItem> checkItemList = setmealDao.findCheckItemByCheckGroupId(checkGroup.getId());
+            checkGroup.setCheckItems(checkItemList);
+        }
+        setmeal.setCheckGroups(checkGroupList);
+        return setmeal;
     }
+
 }
