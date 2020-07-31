@@ -19,6 +19,7 @@
         select * from t_ordersetting where orderDate=#{orderDate}
     </select>
 
+<!--    DATE_FORMAT(orderDate,'%d') 结果是01,02,03  *1则变为1,2,3-->
     <select id="getOrderSettingByMonth" parameterType="string" resultType="java.util.Map">
         select DATE_FORMAT(orderDate,'%d')* 1 date, number, reservations
         from t_ordersetting

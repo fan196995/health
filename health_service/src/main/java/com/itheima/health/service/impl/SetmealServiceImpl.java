@@ -12,11 +12,17 @@ import com.itheima.health.pojo.CheckGroup;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.SetmealService;
+import com.itheima.health.utils.QiNiuUtils;
+import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fanbo
@@ -28,6 +34,12 @@ public class SetmealServiceImpl implements SetmealService {
     @Autowired
     private SetmealDao setmealDao;
 
+    @Autowired
+    private FreeMarkerConfigurer freeMarkerConfigurer;
+
+    @Value("${out_put_path}")//从属性文件读取输出目录的路径
+    private String outputpath ;
+
     @Override
     @Transactional
     public void add(Setmeal setmeal, Integer[] checkgroupIds) {
@@ -38,6 +50,58 @@ public class SetmealServiceImpl implements SetmealService {
                 setmealDao.addSetmealCheckGroup(setmeal.getId(),checkgroupId);
             }
         }
+        //重新生成静态页面
+        generateMobileStaticHtml();
+    }
+
+    //生成静态页面
+    private void generateMobileStaticHtml(){
+        try {
+            //套餐列表
+            generateSetmealListHtml();
+            //套餐详情
+            generateSetmealDetailHtml();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //套餐详情
+    private void generateSetmealDetailHtml() throws Exception {
+        List<Setmeal> setmealList = setmealDao.findAll();
+        for (Setmeal setmeal : setmealList) {
+            //详情
+            Setmeal setmealDetail = setmealDao.findDetailById(setmeal.getId());
+            //设置图片路径
+            setmealDetail.setImg(QiNiuUtils.DOMAIN+setmealDetail.getImg());
+            //生成静态页
+            generateDetailHtml(setmealDetail);
+        }
+
+    }
+    //套餐详情静态页
+    private void generateDetailHtml(Setmeal setmealDetail) throws Exception {
+        //获取模版
+        Template template = freeMarkerConfigurer.getConfiguration().getTemplate("mobile_setmeal_detail.ftl");
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("setmeal",setmealDetail);
+        //解决乱码 utf-8
+        File setmealDetailFile = new File(outputpath, "setmeal_detail_"+setmealDetail.getId()+".html");
+        template.process(dataMap, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(setmealDetailFile),"utf-8")));
+    }
+
+    //套餐列表
+    private void generateSetmealListHtml() throws Exception {
+        //获取模版
+        Template template = freeMarkerConfigurer.getConfiguration().getTemplate("mobile_setmeal.ftl");
+        //数据
+        List<Setmeal> setmealList = setmealDao.findAll();
+        setmealList.forEach(s->s.setImg(QiNiuUtils.DOMAIN+s.getImg()));
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("setmealList",setmealList);
+        //解决乱码 utf-8
+        File setmealListFile = new File(outputpath, "m_setmeal.html");
+        template.process(dataMap, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(setmealListFile),"utf-8")));
     }
 
     @Override

@@ -7,10 +7,7 @@ import com.itheima.health.pojo.OrderSetting;
 import com.itheima.health.service.OrderSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +30,7 @@ public class OrderSettingServiceImpl implements OrderSettingService {
                 //查询是否有该日期
                 OrderSetting order = orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
                 if (order!=null){
+                    //应注意order和orderSetting的区别！！！
                     if (order.getReservations()> orderSetting.getNumber()){
                         throw new HealthException(sdf.format(orderSetting.getOrderDate())+"已预约数不能超过可预约数");
                     }
