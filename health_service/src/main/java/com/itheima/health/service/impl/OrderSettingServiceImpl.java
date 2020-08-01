@@ -43,9 +43,9 @@ public class OrderSettingServiceImpl implements OrderSettingService {
     }
 
     @Override
-    public List<Map<String,Integer>> getOrderSettingByMonth(String date) {
-        String startDate = date + "-01"; // 2020-07-01
-        String endDate = date + "-31"; // 2020-07-31
+    public List<Map<String,Integer>> getOrderSettingByMonth(String month) {
+        String startDate = month + "-01"; // 2020-07-01
+        String endDate = month + "-31"; // 2020-07-31
         List<Map<String,Integer>> monthDatas = orderSettingDao.getOrderSettingByMonth(startDate, endDate);
         return monthDatas;
 

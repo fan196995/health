@@ -15,12 +15,8 @@ import com.aliyuncs.profile.IClientProfile;
  * @date 2020/7/29 20:58
  */
 public class SMSUtils {
-    public static final String VALIDATE_CODE = "SMS_189616640";//发送短信验证码
+    public static final String VALIDATE_CODE = "SMS_174986903";//发送短信验证码
     public static final String ORDER_NOTICE = "SMS_159771588";//体检预约成功通知
-
-    public static void main(String[] args) throws ClientException {
-        SMSUtils.sendShortMessage(VALIDATE_CODE, "15270226277","666666");
-    }
 
     /**
      * 发送短信
@@ -36,8 +32,8 @@ public class SMSUtils {
         final String product = "Dysmsapi";// 短信API产品名称（短信产品名固定，无需修改）
         final String domain = "dysmsapi.aliyuncs.com";// 短信API产品域名（接口地址固定，无需修改）
         // 替换成你的AK
-        final String accessKeyId = "LTAI4FxEfiWwpbs71BYi5JmQ";// 你的accessKeyId,参考本文档步骤2
-        final String accessKeySecret = "arXOsy69vU1JAUggNzr8h2EBy8CYOT";// 你的accessKeySecret，参考本文档步骤2
+        final String accessKeyId = "LTAI4GEpKWNYaCMAixRjqo9n";// 你的accessKeyId,参考本文档步骤2
+        final String accessKeySecret = "WzEYGHQU3A7C9mx2CW0TUcJLYONppa";// 你的accessKeySecret，参考本文档步骤2
         // 初始化ascClient,暂时不支持多region（请勿修改）
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
         DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
@@ -49,7 +45,7 @@ public class SMSUtils {
         // 必填:待发送手机号。支持以逗号分隔的形式进行批量调用，批量上限为1000个手机号码,批量调用相对于单条调用及时性稍有延迟,验证码类型的短信推荐使用单条调用的方式
         request.setPhoneNumbers(phoneNumbers);
         // 必填:短信签名-可在短信控制台中找到
-        request.setSignName("黑马程序员");
+        request.setSignName("有你在便是风景");
         // 必填:短信模板-可在短信控制台中找到
         request.setTemplateCode(templateCode);
         // 可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
@@ -66,5 +62,4 @@ public class SMSUtils {
             System.out.println("请求成功");
         }
     }
-
 }

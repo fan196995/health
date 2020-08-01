@@ -25,6 +25,8 @@ public interface OrderSettingDao {
     //根据日期查
     List<Map<String, Integer>> getOrderSettingByMonth(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
+    //更新已预约人数
+    void editReservationsByOrderDate(Date orderDate);
 
 
 

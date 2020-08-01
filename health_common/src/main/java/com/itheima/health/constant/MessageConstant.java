@@ -69,5 +69,6 @@ public interface MessageConstant {
     static final String EDIT_SETMEAL_SUCCESS = "编辑套餐成功";
     static final String DELETE_SETMEAL_SUCCESS = "删除套餐成功";
     static final String SETMEAL_IN_USE = "套餐被预约不能删除";
+    static final String SENT_VALIDATECODE = "验证码已发送";
 
 }

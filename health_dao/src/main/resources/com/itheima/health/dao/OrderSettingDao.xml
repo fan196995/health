@@ -15,6 +15,10 @@
         update t_ordersetting set number=#{number}  where orderDate=#{orderDate}
     </update>
 
+    <update id="editReservationsByOrderDate" parameterType="date">
+        update t_ordersetting set reservations=reservations+1 where orderDate=#{orderDate}
+    </update>
+
     <select id="findByOrderDate" resultType="com.itheima.health.pojo.OrderSetting" parameterType="date">
         select * from t_ordersetting where orderDate=#{orderDate}
     </select>
@@ -25,4 +29,5 @@
         from t_ordersetting
         where orderDate between #{startDate} and #{endDate}
     </select>
+
 </mapper>

@@ -130,6 +130,8 @@ public class SetmealServiceImpl implements SetmealService {
         }
         setmealDao.deleteSetmealCheckGroup(id);
         setmealDao.deleteById(id);
+        //重新生成静态页面
+        generateMobileStaticHtml();
     }
 
     @Override
@@ -143,6 +145,8 @@ public class SetmealServiceImpl implements SetmealService {
                 setmealDao.addSetmealCheckGroup(setmeal.getId(),checkgroupId);
             }
         }
+        //重新生成静态页面
+        generateMobileStaticHtml();
     }
 
     @Override

@@ -15,7 +15,7 @@ public interface OrderSettingService {
     void add(List<OrderSetting> orderSettingList) throws HealthException;
 
     //根据日期查
-    List<Map<String,Integer>> getOrderSettingByMonth(String date);
+    List<Map<String,Integer>> getOrderSettingByMonth(String month);
 
     //修改最大可预约人数
     void editNumberByDate(OrderSetting orderSetting) throws HealthException;

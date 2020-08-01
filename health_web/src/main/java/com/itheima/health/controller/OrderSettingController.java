@@ -46,8 +46,8 @@ public class OrderSettingController {
     }
 
     @GetMapping(value = "/getOrderSettingByMonth")
-    public Result getOrderSettingByMonth(String date) {
-        List<Map<String,Integer>> list = orderSettingService.getOrderSettingByMonth(date);
+    public Result getOrderSettingByMonth(String month) {
+        List<Map<String,Integer>> list = orderSettingService.getOrderSettingByMonth(month);
         return new Result(true, MessageConstant.GET_ORDERSETTING_SUCCESS, list);
     }
 

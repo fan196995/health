@@ -146,7 +146,7 @@
         },
         methods: {
             getDataByMonth() {
-                axios.get('/ordersetting/getOrderSettingByMonth.do?date=' + this.currentYear + "-" + this.currentMonth).then(response => {
+                axios.get('/ordersetting/getOrderSettingByMonth.do?month=' + this.currentYear + "-" + this.currentMonth).then(response => {
                     this.$message({
                         message: response.data.message,
                         type: response.data.flag ? "success" : "error"
