@@ -47,4 +47,25 @@ public class ValidateCodeController {
         }
         return new Result(false, MessageConstant.SENT_VALIDATECODE);
     }
+
+    //登录
+    @PostMapping("/send4Login")
+    public Result send4Login(String telephone){
+        Jedis jedis = jedisPool.getResource();
+        String key = RedisMessageConstant.SENDTYPE_LOGIN + "_" + telephone;
+        String codeRedis = jedis.get(key);
+        if (codeRedis==null){
+            Integer code = ValidateCodeUtils.generateValidateCode(6);
+            try {
+                SMSUtils.sendShortMessage(SMSUtils.VALIDATE_CODE,telephone,code+"");
+                jedis.setex(key,15*60,code+"");
+                return new Result(true,MessageConstant.SEND_VALIDATECODE_SUCCESS);
+            } catch (ClientException e) {
+                e.printStackTrace();
+                return new Result(false, MessageConstant.SEND_VALIDATECODE_FAIL);
+            }
+        }
+        return new Result(false, MessageConstant.SENT_VALIDATECODE);
+    }
+
 }
