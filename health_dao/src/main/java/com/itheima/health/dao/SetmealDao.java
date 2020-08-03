@@ -7,6 +7,7 @@ import com.itheima.health.pojo.Setmeal;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fanbo
@@ -53,5 +54,8 @@ public interface SetmealDao {
 
     //根据检查组id查检查项
     List<CheckItem> findCheckItemByCheckGroupId(int id);
+
+    List<Map<String, Object>> findSetmealCount();
+
 
 }

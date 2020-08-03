@@ -6,6 +6,7 @@ import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fanbo
@@ -38,4 +39,8 @@ public interface SetmealService {
 
     //方式三
     Setmeal findDetailById3(int id);
+
+    List<Map<String, Object>> findSetmealCount();
+
+
 }
