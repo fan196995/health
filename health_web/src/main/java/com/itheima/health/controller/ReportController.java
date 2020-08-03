@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.Result;
 import com.itheima.health.service.MemberService;
+import com.itheima.health.service.ReportService;
 import com.itheima.health.service.SetmealService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,9 @@ public class ReportController {
 
     @Reference
     private SetmealService setmealService;
+
+    @Reference
+    private ReportService reportService;
 
     //去年一年的会员数量
     @GetMapping(value = "/getMemberReport")
@@ -70,5 +74,12 @@ public class ReportController {
         resultMap.put("setmealCount",setmealCount);
 
         return new Result(true, MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS,resultMap);
+    }
+
+    //运营数据
+    @GetMapping(value = "/getBusinessReportData")
+    public Result getBusinessReportData(){
+        Map<String,Object> report =reportService.getBusinessReport();
+        return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS,report);
     }
 }

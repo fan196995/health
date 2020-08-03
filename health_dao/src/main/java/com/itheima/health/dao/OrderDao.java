@@ -1,6 +1,7 @@
 package com.itheima.health.dao;
 
 import com.itheima.health.pojo.Order;
+import org.apache.ibatis.annotations.Param;
 
 
 import java.util.List;
@@ -14,5 +15,7 @@ public interface OrderDao {
     Integer findOrderCountAfterDate(String date);
     Integer findVisitsCountByDate(String date);
     Integer findVisitsCountAfterDate(String date);
-    List<Map> findHotSetmeal();
+    List<Map<String,Object>> findHotSetmeal();
+
+    Integer findOrderCountBetweenDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
 }

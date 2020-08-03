@@ -81,4 +81,8 @@
           group by o.setmeal_id
           order by setmeal_count desc limit 0,4
     </select>
+
+    <select id="findOrderCountBetweenDate" resultType="java.lang.Integer" parameterType="string">
+        select count(id) from t_order where orderDate between #{startDate} and #{endDate};
+    </select>
 </mapper>
