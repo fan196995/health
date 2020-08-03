@@ -7,6 +7,7 @@ import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.service.CheckItemService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,12 +29,15 @@ public class CheckItemController {
     }
 
     @PostMapping(value = "/add")
+    //@PreAuthorize 权限控制
+    @PreAuthorize("hasAnyAuthority('CHECKITEM_ADD')")
     public Result add(@RequestBody CheckItem checkItem){
         checkItemService.add(checkItem);
         return new Result(true,MessageConstant.ADD_CHECKITEM_SUCCESS);
     }
 
     @PostMapping(value = "/findPage")
+    @PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
 
         PageResult<CheckItem>pageResult = checkItemService.findPage(queryPageBean);
@@ -42,6 +46,7 @@ public class CheckItemController {
     }
 
     @PostMapping(value = "/deleteById")
+    @PreAuthorize("hasAuthority('CHECKITEM_DELETE')")
     public Result deleteById(int id){
         checkItemService.deleteById(id);
         return new Result(true,MessageConstant.DELETE_CHECKITEM_SUCCESS);
@@ -54,6 +59,7 @@ public class CheckItemController {
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAuthority('CHECKITEM_EDIT')")
     public Result update(@RequestBody CheckItem checkItem){
         checkItemService.update(checkItem);
         return new Result(true, MessageConstant.EDIT_CHECKITEM_SUCCESS);

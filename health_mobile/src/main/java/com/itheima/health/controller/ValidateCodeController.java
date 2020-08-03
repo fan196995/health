@@ -8,6 +8,7 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.utils.SMSUtils;
 import com.itheima.health.utils.ValidateCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,21 +32,22 @@ public class ValidateCodeController {
         //redis中验证码
         String key = RedisMessageConstant.SENDTYPE_ORDER+"_"+telephone;
         String codeRedis = jedis.get(key);
-        if (codeRedis==null){
+        if (!StringUtils.isEmpty(codeRedis)){
+            return new Result(false, "验证码已经发送过了，请注意查收!");
+        }else {
             //生成6位验证码
             Integer code = ValidateCodeUtils.generateValidateCode(6);
             try {
                 SMSUtils.sendShortMessage(SMSUtils.VALIDATE_CODE,telephone,code+"");
-                //Setex 命令为指定的 key 设置值及其过期时间
-                jedis.setex(key,15*60,code+"");
-                return new Result(true, MessageConstant.SEND_VALIDATECODE_SUCCESS);
             } catch (ClientException e) {
                 e.printStackTrace();
                 // 发送失败
                 return new Result(false, MessageConstant.SEND_VALIDATECODE_FAIL);
             }
+            //Setex 命令为指定的 key 设置值及其过期时间
+            jedis.setex(key,15*60,code+"");
+            return new Result(true, MessageConstant.SEND_VALIDATECODE_SUCCESS);
         }
-        return new Result(false, MessageConstant.SENT_VALIDATECODE);
     }
 
     //登录

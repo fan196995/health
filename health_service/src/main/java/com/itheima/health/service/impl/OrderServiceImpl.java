@@ -10,7 +10,7 @@ import com.itheima.health.pojo.Member;
 import com.itheima.health.pojo.Order;
 import com.itheima.health.pojo.OrderSetting;
 import com.itheima.health.service.OrderService;
-import org.aspectj.weaver.ast.Or;
+import com.itheima.health.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +44,9 @@ public class OrderServiceImpl implements OrderService {
         String orderDate = (String) orderInfo.get("orderDate");
         Date date = null;
         try {
-            date = new SimpleDateFormat("yyyy-MM-dd").parse(orderDate);
-        } catch (ParseException e) {
+//            date = new SimpleDateFormat("yyyy-MM-dd").parse(orderDate);
+            date  = DateUtils.parseString2Date(orderDate);
+        } catch (Exception e) {
             e.printStackTrace();
             throw new HealthException("日期格式不正确");
         }

@@ -7,6 +7,7 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.Order;
 import com.itheima.health.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,9 +41,10 @@ public class OrderController {
         String key = RedisMessageConstant.SENDTYPE_ORDER + "_" + telephone;
         Jedis jedis = jedisPool.getResource();
         String codeRedis = jedis.get(key);
-        if (codeRedis==null){
+        if (StringUtils.isEmpty(codeRedis)){
             return new Result(false, "请点击发送验证码");
         }
+
         if (!codeRedis.equals(orderInfo.get("validateCode"))){
             return new Result(false, "验证码不正确");
         }
