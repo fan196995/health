@@ -6,10 +6,17 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.service.MemberService;
 import com.itheima.health.service.ReportService;
 import com.itheima.health.service.SetmealService;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -81,5 +88,78 @@ public class ReportController {
     public Result getBusinessReportData(){
         Map<String,Object> report =reportService.getBusinessReport();
         return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS,report);
+    }
+
+    //导出到excel表
+    @GetMapping(value = "/exportBusinessReport")
+    public Result exportBusinessReport(HttpServletRequest request, HttpServletResponse response){
+        //获取模板路径
+        String template = request.getSession().getServletContext().getRealPath("/template/report_template.xlsx");
+        //创建
+        try {
+            OutputStream out = response.getOutputStream();
+            XSSFWorkbook wb = new XSSFWorkbook(template);
+            //获取工作表 第一页
+            XSSFSheet sheetAt = wb.getSheetAt(0);
+            //获取数据
+            Map<String, Object> reportData = reportService.getBusinessReport();
+
+            //赋值到对应行和单元格
+            //日期 2,5
+            sheetAt.getRow(2).getCell(5).setCellValue(reportData.get("reportDate").toString());
+            //新增会员数 4,5
+            sheetAt.getRow(4).getCell(5).setCellValue((Integer)reportData.get("todayNewMember"));
+            //本周新增会员数 5,5
+            sheetAt.getRow(5).getCell(5).setCellValue((Integer)reportData.get("thisWeekNewMember"));
+            //总会员数 4,7
+            sheetAt.getRow(4).getCell(7).setCellValue((Integer)reportData.get("totalMember"));
+            //本月新增会员数 5,7
+            sheetAt.getRow(5).getCell(7).setCellValue((Integer)reportData.get("thisMonthNewMember"));
+            //今日预约数 7,5
+            sheetAt.getRow(7).getCell(5).setCellValue((Integer)reportData.get("todayOrderNumber"));
+            //本周预约数 8,5
+            sheetAt.getRow(8).getCell(5).setCellValue((Integer)reportData.get("thisWeekOrderNumber"));
+            //本月预约数 9,5
+            sheetAt.getRow(9).getCell(5).setCellValue((Integer)reportData.get("thisMonthOrderNumber"));
+            //今日到诊数 7,7
+            sheetAt.getRow(7).getCell(7).setCellValue((Integer)reportData.get("todayVisitsNumber"));
+            //本周到诊数 8,7
+            sheetAt.getRow(8).getCell(7).setCellValue((Integer)reportData.get("thisWeekVisitsNumber"));
+            //本月到诊数 9,7
+            sheetAt.getRow(9).getCell(7).setCellValue((Integer)reportData.get("thisMonthVisitsNumber"));
+
+            // 热门套餐
+            List<Map<String,Object>> hotSetmeal = (List<Map<String,Object>>)reportData.get("hotSetmeal");
+            int row = 12;
+            for (Map<String, Object> map : hotSetmeal) {
+                sheetAt.getRow(row).getCell(4).setCellValue((String)map.get("name"));
+
+                sheetAt.getRow(row).getCell(5).setCellValue((Long)map.get("setmeal_count"));
+
+                BigDecimal proportion = (BigDecimal) map.get("proportion");
+                sheetAt.getRow(row).getCell(6).setCellValue(proportion.doubleValue());
+
+                sheetAt.getRow(row).getCell(7).setCellValue((String)map.get("remark"));
+                row++;
+            }
+
+            //导出文件Content-Type: application/vnd.ms-excel
+            response.setContentType("application/vnd.ms-excel");
+
+            String filename = "运营统计数据报表.xlsx";
+            // 解决中文乱码
+            filename = new String(filename.getBytes(), "ISO-8859-1");
+
+            // 设置头信息
+            //attachment（意味着消息体应该被下载到本地；大多数浏览器会呈现一个"保存为"的对话框，将filename的值预填为下载后的文件名
+            response.setHeader("Content-Disposition","attachement;filename=" + filename);
+            wb.write(out);
+            out.flush();
+            out.close();
+           return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.GET_BUSINESS_REPORT_FAIL,null);
+        }
     }
 }
