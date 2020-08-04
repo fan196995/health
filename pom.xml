@@ -255,6 +255,18 @@
                 <artifactId>freemarker</artifactId>
                 <version>${freemarker}</version>
             </dependency>
+            <!-- 导入iText报表，支持中文 -->
+            <dependency>
+                <groupId>com.itextpdf</groupId>
+                <artifactId>itext-asian</artifactId>
+                <version>5.2.0</version>
+            </dependency>
+            <!-- 导入iText报表，支持中文 -->
+            <dependency>
+                <groupId>com.alpha</groupId>
+                <artifactId>itextasian</artifactId>
+                <version>1.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
