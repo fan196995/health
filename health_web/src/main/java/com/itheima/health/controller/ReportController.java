@@ -6,6 +6,8 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.service.MemberService;
 import com.itheima.health.service.ReportService;
 import com.itheima.health.service.SetmealService;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
@@ -162,4 +165,32 @@ public class ReportController {
             return new Result(false, MessageConstant.GET_BUSINESS_REPORT_FAIL,null);
         }
     }
+
+    //导出运营统计数据报表
+    @GetMapping("/exportBusinessReportPdf")
+    public Result exportBusinessReportPdf(HttpServletRequest request,HttpServletResponse response){
+        //getRealPath("/") webapp下
+        String realPath = request.getSession().getServletContext().getRealPath("/template");
+        // File.separator 的作用相当于 '\'
+        String jrxml = realPath+ File.separator+"health_business3.jrxml";
+        String jasper = realPath+ File.separator+"health_business3.jasper";
+
+        //对模板进行编辑
+        try {
+            JasperCompileManager.compileReportToFile(jrxml,jasper);
+            Map<String,Object> map = reportService.getBusinessReport();
+            //热门套餐
+            List<Map<String,Object>> hotSetmeal = (List<Map<String,Object>>)map.get("hotSetmeal");
+            //自定义数据JRBeanCollectionDataSource
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, map, new JRBeanCollectionDataSource(hotSetmeal));
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition","attachement;filename=businessReport.pdf");
+            JasperExportManager.exportReportToPdfStream(jasperPrint,response.getOutputStream());
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Result(false,"导出运营数据统计pdf文件失败");
+    }
+
 }

@@ -110,7 +110,7 @@ public class OrderController {
             table.setBorder(1); // 边框
             table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER); //水平对齐方式
             table.getDefaultCell().setVerticalAlignment(Element.ALIGN_TOP); // 垂直对齐方式
-            /*设置表格属性*/
+            // 设置表格属性
             table.setBorderColor(new Color(0, 0, 255)); //将边框的颜色设置为蓝色
             table.setPadding(5);//设置表格与字体间的间距
             //table.setSpacing(5);//设置表格上下的间距
