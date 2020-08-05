@@ -16,6 +16,7 @@ import com.lowagie.text.Font;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
@@ -65,6 +66,7 @@ public class OrderController {
         //设置预约类型 微信预约
         orderInfo.put("orderType", Order.ORDERTYPE_WEIXIN);
         Order order = orderService.submit(orderInfo);
+
         return new Result(true, MessageConstant.ORDER_SUCCESS,order);
     }
 

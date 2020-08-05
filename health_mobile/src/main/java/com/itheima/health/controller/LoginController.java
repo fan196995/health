@@ -7,6 +7,7 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.Member;
 import com.itheima.health.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,9 +35,11 @@ public class LoginController {
     @RequestMapping(value = "/check")
     public Result check(@RequestBody Map<String,String> loginInfo, HttpServletResponse response){
         String telephone = loginInfo.get("telephone");
+
         String key = RedisMessageConstant.SENDTYPE_LOGIN+"_"+telephone;
         Jedis jedis = jedisPool.getResource();
         String codeRedis = jedis.get(key);
+
         if (codeRedis==null){
             return new Result(false, "请点击发送验证码");
         }
@@ -60,6 +63,7 @@ public class LoginController {
         cookie.setMaxAge(30*24*60*60);//一个月
         cookie.setPath("/");  //所有路径
         response.addCookie(cookie);
+
         return new Result(true, MessageConstant.LOGIN_SUCCESS);
     }
 }
