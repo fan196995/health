@@ -36,4 +36,9 @@ public interface RoleDao {
 
     //删除角色菜单中间表
     void deleteRoleMenu(Integer roleId);
+
+    //角色用户中间表是否有值
+    int findUserByRoleId(int id);
+
+    void deleteById(int id);
 }

@@ -64,6 +64,12 @@ public class RoleController {
         return new Result(true,MessageConstant.EDIT_ROLE_SUCCESS);
     }
 
+    @PostMapping(value = "/deleteById")
+    public Result deleteById(int id){
+        roleService.deleteById(id);
+        return new Result(true,MessageConstant.DELETE_ROLE_SUCCESS);
+    }
+
 
 }
 

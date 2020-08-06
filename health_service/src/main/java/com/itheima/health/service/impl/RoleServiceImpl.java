@@ -3,9 +3,11 @@ package com.itheima.health.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.dao.RoleDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.Role;
 import com.itheima.health.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +92,18 @@ public class RoleServiceImpl implements RoleService {
                 roleDao.addRoleMenu(roleId,menuId);
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(int id) {
+        //用户角色
+        int count = roleDao.findUserByRoleId(id);
+        if(count > 0){
+            throw new HealthException(MessageConstant.ROLE_IN_USE);
+        }
+        roleDao.deleteRoleMenu(id);
+        roleDao.deleteRolePermission(id);
+        roleDao.deleteById(id);
     }
 }

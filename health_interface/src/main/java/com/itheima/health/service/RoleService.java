@@ -2,6 +2,7 @@ package com.itheima.health.service;
 
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.exception.HealthException;
 import com.itheima.health.pojo.Role;
 
 import java.util.List;
@@ -29,4 +30,5 @@ public interface RoleService {
     //修改
     void update(Role role, Integer[] permissionIds, Integer[] menuIds);
 
+    void deleteById(int id) throws HealthException;
 }

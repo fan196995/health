@@ -33,6 +33,10 @@
         delete from t_role_menu where role_id=#{roleId}
     </delete>
 
+    <delete id="deleteById" parameterType="int">
+        delete from t_role where id=#{id}
+    </delete>
+
     <select id="findByCondition" resultType="com.itheima.health.pojo.Role">
         select * from t_role
         <where>
@@ -56,5 +60,9 @@
 
     <select id="findMenuIdsByRoleId" resultType="java.lang.Integer" parameterType="int">
         select menu_id from t_role_menu where role_id=#{id}
+    </select>
+
+    <select id="findUserByRoleId" resultType="java.lang.Integer" parameterType="int">
+        select count(1) from t_user_role where role_id=#{id}
     </select>
 </mapper>
