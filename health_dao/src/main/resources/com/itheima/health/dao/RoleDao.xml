@@ -19,6 +19,20 @@
         insert into t_role_menu (role_id, menu_id) values (#{roleId},#{menuId})
     </insert>
 
+    <update id="update" parameterType="Role">
+        update t_role set
+        name=#{name},keyword=#{keyword},description=#{description}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteRolePermission" parameterType="integer">
+        delete from t_role_permission where role_id=#{roleId}
+    </delete>
+
+    <delete id="deleteRoleMenu" parameterType="integer">
+        delete from t_role_menu where role_id=#{roleId}
+    </delete>
+
     <select id="findByCondition" resultType="com.itheima.health.pojo.Role">
         select * from t_role
         <where>
@@ -41,6 +55,6 @@
     </select>
 
     <select id="findMenuIdsByRoleId" resultType="java.lang.Integer" parameterType="int">
-        select member_id from t_role_menu where role_id=#{id}
+        select menu_id from t_role_menu where role_id=#{id}
     </select>
 </mapper>

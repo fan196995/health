@@ -58,6 +58,12 @@ public class RoleController {
         return new Result(true,MessageConstant.QUERY_MENU_SUCCESS,menuIds);
     }
 
+    @PostMapping (value = "/update")
+    public Result update(@RequestBody Role role,Integer[] permissionIds,Integer[] menuIds){
+        roleService.update(role,permissionIds,menuIds);
+        return new Result(true,MessageConstant.EDIT_ROLE_SUCCESS);
+    }
+
 
 }
 

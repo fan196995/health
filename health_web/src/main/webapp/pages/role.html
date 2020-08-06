@@ -125,7 +125,7 @@
                                     <el-row>
                                         <el-col :span="24">
                                             <el-form-item label="说明">
-                                                <el-input v-model="formData.remark" type="textarea"></el-input>
+                                                <el-input v-model="formData.description" type="textarea"></el-input>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
@@ -192,7 +192,7 @@
 
             <!-- 编辑标签弹层 -->
             <div class="edit-form">
-                <el-dialog title="编辑角色" :visible.sync="dialogFormVisible">
+                <el-dialog title="编辑角色" :visible.sync="dialogFormVisible4Edit">
                     <template>
                         <el-tabs v-model="activeName" :model="formData" type="card">
                             <el-tab-pane label="基本信息" name="first">
@@ -212,7 +212,7 @@
                                     <el-row>
                                         <el-col :span="24">
                                             <el-form-item label="说明">
-                                                <el-input v-model="formData.remark" type="textarea"></el-input>
+                                                <el-input v-model="formData.description" type="textarea"></el-input>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
@@ -271,8 +271,8 @@
                         </el-tabs>
                     </template>
                     <div slot="footer" class="dialog-footer">
-                        <el-button @click="dialogFormVisible = false">取消</el-button>
-                        <el-button type="primary" @click="handleAdd()">确定</el-button>
+                        <el-button @click="dialogFormVisible4Edit = false">取消</el-button>
+                        <el-button type="primary" @click="handleEdit()">确定</el-button>
                     </div>
                 </el-dialog>
             </div>
@@ -312,7 +312,7 @@
             //编辑
             handleEdit() {
                 // 提交请求添加
-                axios.post('/role/update.do?permissionIds=' + this.permissionIds +'&menuIds'+this.menuIds, this.formData).then(res => {
+                axios.post('/role/update.do?permissionIds=' + this.permissionIds +'&menuIds='+this.menuIds, this.formData).then(res => {
                     this.$message({
                         message: res.data.message,
                         type: res.data.flag ? "success" : "error"
@@ -327,7 +327,7 @@
             },
             //添加
             handleAdd () {
-                axios.post('/role/add.do?permissionIds='+this.permissionIds +'&menuIds'+this.menuIds ,this.formData).then(response=>{
+                axios.post('/role/add.do?permissionIds='+this.permissionIds +'&menuIds='+this.menuIds ,this.formData).then(response=>{
                     this.$message({
                         message: response.data.message,
                         type: response.data.flag?"success":"error"
@@ -386,11 +386,10 @@
                 var id = row.id;
                 axios.get('/role/findById.do?id=' + id).then(response => {
                     if (response.data.flag) {
-                        this.formData = response.data.data.role;
-                        //发送请求后台获取所有检查项数据，得到后绑定检查项列表
+                        this.formData = response.data.data;
                         axios.get('/permission/findAll.do').then(response => {
                             if (response.data.flag) {
-                                this.tableData = response.data.data;
+                                this.tablePermissionData = response.data.data;
                                 axios.get("/role/findPermissionIdsByRoleId.do?id=" + id).then(response => {
                                     if (response.data.flag) {
                                         this.permissionIds = response.data.data;
@@ -404,7 +403,7 @@
                         });
                         axios.get('/menu/findAll.do').then(response => {
                             if (response.data.flag) {
-                                this.tableData = response.data.data;
+                                this.tableMenuData = response.data.data;
                                 axios.get("/role/findMenuIdsByRoleId.do?id=" + id).then(response => {
                                     if (response.data.flag) {
                                         this.menuIds = response.data.data;

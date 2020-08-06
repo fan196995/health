@@ -25,4 +25,8 @@ public interface RoleService {
 
     //菜单
     List<Integer> findMenuIdsByRoleId(int id);
+
+    //修改
+    void update(Role role, Integer[] permissionIds, Integer[] menuIds);
+
 }

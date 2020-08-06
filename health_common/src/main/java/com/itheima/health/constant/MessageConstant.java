@@ -73,6 +73,7 @@ public interface MessageConstant {
     static final String QUERY_ROLE_SUCCESS = "角色分页查询成功";
     static final String ADD_ROLE_SUCCESS = "角色添加成功";
     static final String QUERY_ROLELIST_SUCCESS = "角色列表查询成功";
+    static final String EDIT_ROLE_SUCCESS = "角色修改成功";
     static final String QUERY_PERMISSION_SUCCESS = "权限查询成功";
     static final String QUERY_MENU_SUCCESS = "菜单查询成功";
 

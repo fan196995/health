@@ -70,4 +70,25 @@ public class RoleServiceImpl implements RoleService {
     public List<Integer> findMenuIdsByRoleId(int id) {
         return roleDao.findMenuIdsByRoleId(id);
     }
+
+    @Override
+    @Transactional
+    public void update(Role role, Integer[] permissionIds, Integer[] menuIds) {
+        roleDao.update(role);
+        Integer roleId = role.getId();
+        //删除中间表
+        roleDao.deleteRolePermission(roleId);
+        if (permissionIds!=null){
+            for (Integer permissionId : permissionIds) {
+                roleDao.addRolePermission(roleId,permissionId);
+            }
+        }
+        //删除中间表
+        roleDao.deleteRoleMenu(roleId);
+        if (menuIds!=null){
+            for (Integer menuId : menuIds) {
+                roleDao.addRoleMenu(roleId,menuId);
+            }
+        }
+    }
 }

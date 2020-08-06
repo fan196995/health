@@ -27,4 +27,13 @@ public interface RoleDao {
     List<Integer> findPermissionIdsByRoleId(int id);
 
     List<Integer> findMenuIdsByRoleId(int id);
+
+    //修改
+    void update(Role role);
+
+    //删除角色权限中间表
+    void deleteRolePermission(Integer roleId);
+
+    //删除角色菜单中间表
+    void deleteRoleMenu(Integer roleId);
 }
