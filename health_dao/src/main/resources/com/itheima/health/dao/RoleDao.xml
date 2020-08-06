@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.health.dao.RoleDao">
+    <insert id="add" parameterType="Role">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into t_role (name,keyword,description)
+        values (#{name},#{keyword},#{description})
+    </insert>
+
+    <insert id="addRolePermission" parameterType="integer">
+        insert into t_role_permission (role_id, permission_id) values (#{roleId},#{permissionId})
+    </insert>
+
+    <insert id="addRoleMenu" parameterType="integer">
+        insert into t_role_menu (role_id, menu_id) values (#{roleId},#{menuId})
+    </insert>
+
+    <select id="findByCondition" resultType="com.itheima.health.pojo.Role">
+        select * from t_role
+        <where>
+            <if test="_parameter != null and _parameter.length > 0">
+                name like #{queryString} or keyword like #{queryString}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAll" resultType="com.itheima.health.pojo.Role">
+        select * from t_role
+    </select>
+
+    <select id="findById" resultType="com.itheima.health.pojo.Role" parameterType="int">
+        select * from t_role where id=#{id}
+    </select>
+
+    <select id="findPermissionIdsByRoleId" resultType="java.lang.Integer" parameterType="int">
+        select permission_id from t_role_permission where role_id=#{id};
+    </select>
+
+    <select id="findMenuIdsByRoleId" resultType="java.lang.Integer" parameterType="int">
+        select member_id from t_role_menu where role_id=#{id}
+    </select>
+</mapper>

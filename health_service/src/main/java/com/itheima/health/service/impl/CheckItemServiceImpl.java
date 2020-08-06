@@ -37,7 +37,6 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Override
     public PageResult<CheckItem> findPage(QueryPageBean queryPageBean) {
         PageHelper.startPage(queryPageBean.getCurrentPage(),queryPageBean.getPageSize());
-
         //queryPageBean.getQueryString()) 查询条件
         if (!StringUtils.isEmpty(queryPageBean.getQueryString())){
             queryPageBean.setQueryString("%"+queryPageBean.getQueryString()+"%");

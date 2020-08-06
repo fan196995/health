@@ -70,5 +70,10 @@ public interface MessageConstant {
     static final String DELETE_SETMEAL_SUCCESS = "删除套餐成功";
     static final String SETMEAL_IN_USE = "套餐被预约不能删除";
     static final String SENT_VALIDATECODE = "验证码已发送";
+    static final String QUERY_ROLE_SUCCESS = "角色分页查询成功";
+    static final String ADD_ROLE_SUCCESS = "角色添加成功";
+    static final String QUERY_ROLELIST_SUCCESS = "角色列表查询成功";
+    static final String QUERY_PERMISSION_SUCCESS = "权限查询成功";
+    static final String QUERY_MENU_SUCCESS = "菜单查询成功";
 
 }
