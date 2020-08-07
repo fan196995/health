@@ -78,5 +78,11 @@ public interface MessageConstant {
     static final String QUERY_MENU_SUCCESS = "菜单查询成功";
     static final String DELETE_ROLE_SUCCESS = "角色删除成功";
     static final String ROLE_IN_USE = "该角色被使用不能删除";
+    static final String ADDRESS_IN_USE = "该地址被使用不能删除";
+    static final String QUERY_ADDRESS_SUCCESS = "地址查询成功";
+    static final String EDIT_ADDRESS_SUCCESS = "地址修改成功";
+    static final String DELETE_ADDRESS_SUCCESS = "地址删除成功";
+    static final String ADD_ADDRESS_SUCCESS = "地址添加成功";
+    static final String QUERY_ADDRESSLIST_SUCCESS = "地址列表查询成功";
 
 }

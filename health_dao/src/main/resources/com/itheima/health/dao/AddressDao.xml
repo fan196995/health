@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.health.dao.AddressDao">
+    <insert id="add" parameterType="Address">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into t_address (name,telephone,point,address)
+        values (#{name},#{telephone},#{point},#{address})
+    </insert>
+
+    <update id="update" parameterType="Address">
+        update t_address set
+        name=#{name},telephone=#{telephone},point=#{point},address=#{address}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+          delete from t_address where id=#{id}
+    </delete>
+
+    <select id="findByCondition" resultType="com.itheima.health.pojo.Address">
+        select * from t_address
+        <where>
+            <if test="_parameter != null and _parameter.length > 0">
+                name like #{queryString} or address like #{queryString}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAll" resultType="com.itheima.health.pojo.Address">
+        select * from t_address
+    </select>
+
+    <select id="findById" resultType="com.itheima.health.pojo.Address">
+        select * from t_address where id=#{id}
+    </select>
+
+    <select id="findCountByOrder" resultType="java.lang.Integer">
+        select count(1) from t_address_order where address_id=#{id};
+    </select>
+</mapper>

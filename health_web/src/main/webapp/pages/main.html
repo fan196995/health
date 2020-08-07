@@ -228,6 +228,21 @@
                         }
                     ]
                 },
+                {
+                    "path": "7",     //菜单项所对应的路由路径
+                    "title": "体检机构",     //菜单项名称
+                    "icon":"fa-stethoscope",
+                    "children":[//是否有子菜单，若没有，则为[]
+                        {
+                            "path": "/7-1",
+                            "title": "体检机构地址管理",
+                            "linkUrl":"/pages/address.html",
+                            "children":[]
+                        }
+                    ]
+                },
+
+
             ]
         },
         created: function () {

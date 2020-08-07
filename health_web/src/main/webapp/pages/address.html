@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>传智健康</title>
+    <meta name="description" content="传智健康">
+    <meta name="keywords" content="传智健康">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- 引入组件库 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="../plugins/elementui/index.js"></script>
+    <script src="../js/axios-0.18.0.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=QHOtD0fqMwldV5ApOGPvj3RZr12dtMyr"></script>
+    <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+        .datatable {
+            position: relative;
+            box-sizing: border-box;
+            -webkit-box-flex: 1;
+            width: 100%;
+            max-width: 100%;
+            font-size: 14px;
+            color: rgb(96, 98, 102);
+            overflow: hidden;
+            flex: 1 1 0%;
+        }
+        .datatable td, .datatable th {
+            padding: 12px 0;
+            min-width: 0;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            position: relative;
+            text-align: left;
+        }
+    </style>
+</head>
+<body class="hold-transition">
+<div id="app">
+    <div class="content-header">
+        <h1>体检机构管理<small>体检机构地址管理</small></h1>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>体检机构管理</el-breadcrumb-item>
+            <el-breadcrumb-item>体检机构地址管理</el-breadcrumb-item>
+        </el-breadcrumb>
+    </div>
+    <div class="app-container">
+        <div class="box">
+            <div class="filter-container">
+                <el-input placeholder="体检机构名" v-model="pagination.queryString" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"></el-input>
+                <el-button @click="pagination.currentPage=1;findPage()" class="dalfBut">查询</el-button>
+                <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
+            </div>
+            <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
+                <el-table-column type="index" align="center" label="序号"></el-table-column>
+                <el-table-column prop="name" label="体检机构名" align="center"></el-table-column>
+                <el-table-column prop="telephone" label="联系电话" align="center"></el-table-column>
+                <el-table-column prop="point" label="经纬度" align="center"></el-table-column>
+                <el-table-column prop="address" label="详细地址" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="primary" size="mini"  @click="handleUpdate(scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger"  @click="handleDelete(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination
+                        class="pagiantion"
+                        @current-change="handleCurrentChange"
+                        :current-page="pagination.currentPage"
+                        :page-size="pagination.pageSize"
+                        layout="total, prev, pager, next, jumper"
+                        :total="pagination.total">
+                </el-pagination>
+            </div>
+            <!-- 新增标签弹层 -->
+            <div class="add-form">
+                <el-dialog title="新增体检机构地址" :visible.sync="dialogFormVisible">
+                                <el-form :model="formData" :rules="rules" label-position="right" label-width="100px">
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="体检机构名" prop="name">
+                                                <el-input v-model="formData.name"/>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="联系电话" prop="telephone">
+                                                <el-input v-model="formData.telephone"/>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="24">
+                                            <el-form-item label="经纬度">
+                                                <el-input v-model="formData.point" type="textarea"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="详细地址">
+                                                <el-input v-model="formData.address" type="textarea"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="dialogFormVisible = false">取消</el-button>
+                        <el-button type="primary" @click="handleAdd()">确定</el-button>
+                    </div>
+                </el-dialog>
+
+                要查询的地址：<input id="text_" type="text" value="" style="margin-right:100px;" placeholder="请输入地址"/>
+                所查地址经纬度：<input id="result_" type="text" />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" value="查询" onclick="searchByStationName();"/>
+                <div id="container"
+                     style="position: absolute;
+                margin-top:30px;
+                width: 800px;
+                height: 400px;
+                top: 50;
+                border: 1px solid gray;
+                overflow:hidden;">
+                </div>
+            </div>
+
+            <!-- 编辑标签弹层 -->
+            <div class="edit-form">
+                <el-dialog title="编辑体检机构地址" :visible.sync="dialogFormVisible4Edit">
+                                <el-form :model="formData" :rules="rules" label-position="right" label-width="100px">
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="体检机构名" prop="name">
+                                                <el-input v-model="formData.name"/>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="联系电话" prop="telephone">
+                                                <el-input v-model="formData.telephone"/>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="10">
+                                            <el-form-item label="经纬度">
+                                                <el-input v-model="formData.point" type="textarea"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="详细地址">
+                                                <el-input v-model="formData.address" type="textarea"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="dialogFormVisible4Edit = false">取消</el-button>
+                        <el-button type="primary" @click="handleEdit()">确定</el-button>
+                    </div>
+
+                </el-dialog>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data:{
+            activeName:'first',//添加/编辑窗口Tab标签名称
+            pagination: {//分页相关属性
+                currentPage: 1,
+                pageSize:10,
+                total:100,
+                queryString:null,
+            },
+            dataList: [],//列表数据
+            formData: {},//表单数据
+            dialogFormVisible: false,//控制添加窗口显示/隐藏
+            dialogFormVisible4Edit: false,//控制编辑窗口显示/隐藏
+            rules: {//校验规则
+                name: [{ required: true, message: '体检机构名称为必填项', trigger: 'blur' }],
+                telephone: [{ required: true, message: '手机号为必填项', trigger: 'blur' }]
+            }
+        },
+        created() {
+            this.findPage();
+        },
+        methods: {
+            //编辑
+            handleEdit() {
+                // 提交请求添加
+                axios.post('/address/update.do', this.formData).then(res => {
+                    this.$message({
+                        message: res.data.message,
+                        type: res.data.flag ? "success" : "error"
+                    });
+                    if (res.data.flag) {
+                        // 关闭窗口
+                        this.dialogFormVisible4Edit = false;
+                        // 刷新列表数据
+                        this.findPage();
+                    }
+                })
+            },
+            //添加
+            handleAdd () {
+                axios.post('/address/add.do',this.formData).then(response=>{
+                    this.$message({
+                        message: response.data.message,
+                        type: response.data.flag?"success":"error"
+                    });
+                    if(response.data.flag){
+                        this.dialogFormVisible = false;
+                        this.findPage();
+                    }
+                })
+            },
+            //分页查询
+            findPage() {
+                axios.post('/address/findPage.do', this.pagination).then(res => {
+                    if (res.data.flag) {
+                        // 绑定数据
+                        this.dataList = res.data.data.rows;
+                        this.pagination.total = res.data.data.total;
+                    } else {
+                        this.$message.error(res.data.message);
+                    }
+                })
+            },
+            // 重置表单
+            resetForm() {
+                // 清空表单内容
+                this.formData = {};
+                this.permissionIds = [];
+                this.menuIds = [];
+                // 默认展示套餐基本信息标签页
+                this.activeName = 'first';
+            },
+            // 弹出添加窗口
+            handleCreate() {
+                this.resetForm();
+                //弹出添加窗口
+                this.dialogFormVisible = true;
+            },
+            // 弹出编辑窗口
+            handleUpdate(row) {
+                this.resetForm();
+                this.dialogFormVisible4Edit = true;
+                var id = row.id;
+                axios.get('/address/findById.do?id=' + id).then(response => {
+                    if (response.data.flag) {
+                        this.formData = response.data.data;
+                    } else {
+                        this.$message.error(response.data.message);
+                    }
+                })
+            },
+            //切换页码
+            handleCurrentChange(currentPage) {
+                this.pagination.currentPage = currentPage;
+                this.findPage();
+            },
+            // 删除
+            handleDelete(row) {
+                var id = row.id;
+                this.$confirm('此操作将【永久删除】该检查组, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/address/deleteById.do?id=' + id).then(res => {
+                        this.$message({
+                            message: res.data.message,
+                            type: res.data.flag ? "success" : "error"
+                        });
+                        if (res.data.flag) {
+                            // 刷新列表
+                            this.findPage();
+                        }
+                    })
+                }).catch(() => {
+
+                });
+            }
+        }
+    });
+</script>
+
+
+<script type="text/javascript">
+    //百度地图
+   var map = new BMap.Map("container");
+   map.centerAndZoom("深圳宝安区", 12);
+   map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
+   map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+
+   map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+   map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+   map.addControl(new BMap.OverviewMapControl({ isOpen: true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT }));   //右下角，打开
+
+   var localSearch = new BMap.LocalSearch(map);
+   localSearch.enableAutoViewport(); //允许自动调节窗体大小
+
+   function searchByStationName() {
+       // map.clearOverlays();//清空原来的标注
+       var keyword = document.getElementById("text_").value;
+       localSearch.setSearchCompleteCallback(function (searchResult) {
+           var poi = searchResult.getPoi(0);
+           document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat;
+           map.centerAndZoom(poi.point, 13);
+           var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+           map.addOverlay(marker);
+           var content = document.getElementById("text_").value + "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
+           // 经度
+           console.log("经度:"+ poi.point.lng);
+           // 纬度
+           console.log("纬度:"+ poi.point.lat);
+           var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
+           marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
+           // marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+       });
+       localSearch.search(keyword);
+   }
+</script>
+</html>
