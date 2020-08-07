@@ -94,6 +94,7 @@ public class OrderServiceImpl implements OrderService {
             //添加订单
             order.setOrderType(((String) orderInfo.get("orderType")));
             order.setOrderStatus(Order.ORDERSTATUS_NO);
+            order.setAddressId((Integer) orderInfo.get("addressId"));
             orderDao.add(order);
             return order;
     }

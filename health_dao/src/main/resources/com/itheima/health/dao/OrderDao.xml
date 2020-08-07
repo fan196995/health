@@ -9,14 +9,15 @@
         <result column="orderType" property="orderType"/>
         <result column="orderStatus" property="orderStatus"/>
         <result column="setmeal_id" property="setmealId"/>
+        <result column="address_id" property="addressId"/>
     </resultMap>
     <!--新增-->
     <insert id="add" parameterType="com.itheima.health.pojo.Order">
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into t_order(member_id,orderDate,orderType,orderStatus,setmeal_id)
-        values (#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
+        insert into t_order(member_id,orderDate,orderType,orderStatus,setmeal_id,address_id)
+        values (#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId},#{addressId})
     </insert>
 
     <!--动态条件查询-->
@@ -41,17 +42,22 @@
             <if test="setmealId != null">
                 and setmeal_id = #{setmealId}
             </if>
+            <if test="addressId != null">
+                and address_id = #{addressId}
+            </if>
         </where>
     </select>
 
     <!--根据预约id查询预约信息，包括体检人信息、套餐信息-->
     <select id="findById4Detail" parameterType="int" resultType="map">
-        select m.name member ,s.name setmeal, o.setmeal_id setmealId , o.orderDate orderDate,o.orderType orderType
+        select m.name member,s.name setmeal, o.setmeal_id setmealId , o.orderDate orderDate,o.orderType orderType,
+               a.name addressName,a.address address
         from
           t_order o,
           t_member m,
-          t_setmeal s
-        where o.member_id=m.id and o.setmeal_id=s.id and o.id=#{id}
+          t_setmeal s,
+          t_address a
+        where o.member_id=m.id and o.setmeal_id=s.id and o.address_id=a.id and o.id=#{id}
     </select>
 
     <!--根据日期统计预约数-->

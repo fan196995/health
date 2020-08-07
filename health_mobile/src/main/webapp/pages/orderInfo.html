@@ -88,6 +88,14 @@
                             <label>身份证号</label>
                             <input v-model="orderInfo.idCard" type="text" class="input-clear" placeholder="请输入身份证号">
                         </div>
+                        <div class="input-row">
+                            <label>体检中心</label>
+                            <select v-model="orderInfo.addressId" >
+                                <option v-for="address in addressList" :value="address.id">
+                                    {{address.name}}
+                                </option>
+                            </select>
+                        </div>
                         <div class="date">
                             <label>体检日期</label>
                             <i class="icon-date" class="picktime"></i>
@@ -104,11 +112,14 @@
             var vue = new Vue({
                 el:'#app',
                 data:{
+                    // addressList:[], //地址信息
                     setmeal:{},//套餐信息
+                    //预约信息
                     orderInfo:{
                         setmealId:id, // 用于传递套餐id
                         sex:'1' // 用于默认显示性别男
-                    }//预约信息
+                    },
+                    addressList:[]
                 },
                 methods:{
                     //发送验证码
@@ -157,6 +168,14 @@
                     axios.post("/setmeal/findDetailById.do?id=" + id).then((response) => {
                         if (response.data.flag){
                             this.setmeal = response.data.data;
+                        }else {
+                            this.$message.error(response.data.message);
+                        }
+                    });
+
+                    axios.get("/address/findAllMobile.do").then((response) => {
+                        if (response.data.flag){
+                            this.addressList = response.data.data;
                         }else {
                             this.$message.error(response.data.message);
                         }

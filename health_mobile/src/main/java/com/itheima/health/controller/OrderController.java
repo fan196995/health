@@ -61,6 +61,10 @@ public class OrderController {
         if (!codeRedis.equals(orderInfo.get("validateCode"))){
             return new Result(false, "验证码不正确");
         }
+
+        Integer addressId = (Integer) orderInfo.get("addressId");
+        orderInfo.put("addressId",addressId);
+
         //清除redis中验证码
         jedis.del(key);
         //设置预约类型 微信预约

@@ -17,7 +17,8 @@
     <script src="../js/vue.js"></script>
     <script src="../plugins/elementui/index.js"></script>
     <script src="../js/axios-0.18.0.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=QHOtD0fqMwldV5ApOGPvj3RZr12dtMyr"></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/getscript?v=2.0&ak=QHOtD0fqMwldV5ApOGPvj3RZr12dtMyr"></script>
     <style>
         .avatar-uploader .el-upload {
             border: 1px dashed #d9d9d9;
@@ -26,9 +27,11 @@
             position: relative;
             overflow: hidden;
         }
+
         .avatar-uploader .el-upload:hover {
             border-color: #409EFF;
         }
+
         .avatar-uploader-icon {
             font-size: 28px;
             color: #8c939d;
@@ -37,11 +40,13 @@
             line-height: 178px;
             text-align: center;
         }
+
         .avatar {
             width: 178px;
             height: 178px;
             display: block;
         }
+
         .datatable {
             position: relative;
             box-sizing: border-box;
@@ -53,6 +58,7 @@
             overflow: hidden;
             flex: 1 1 0%;
         }
+
         .datatable td, .datatable th {
             padding: 12px 0;
             min-width: 0;
@@ -68,7 +74,9 @@
 <body class="hold-transition">
 <div id="app">
     <div class="content-header">
-        <h1>体检机构管理<small>体检机构地址管理</small></h1>
+        <h1>体检机构管理
+            <small>体检机构地址管理</small>
+        </h1>
         <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>体检机构管理</el-breadcrumb-item>
@@ -78,7 +86,8 @@
     <div class="app-container">
         <div class="box">
             <div class="filter-container">
-                <el-input placeholder="体检机构名" v-model="pagination.queryString" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"></el-input>
+                <el-input placeholder="体检机构名" v-model="pagination.queryString" style="width: 200px;" class="filter-item"
+                          @keyup.enter.native="handleFilter"></el-input>
                 <el-button @click="pagination.currentPage=1;findPage()" class="dalfBut">查询</el-button>
                 <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
             </div>
@@ -90,8 +99,8 @@
                 <el-table-column prop="address" label="详细地址" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        <el-button type="primary" size="mini"  @click="handleUpdate(scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger"  @click="handleDelete(scope.row)">删除</el-button>
+                        <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -108,34 +117,34 @@
             <!-- 新增标签弹层 -->
             <div class="add-form">
                 <el-dialog title="新增体检机构地址" :visible.sync="dialogFormVisible">
-                                <el-form :model="formData" :rules="rules" label-position="right" label-width="100px">
-                                    <el-row>
-                                        <el-col :span="12">
-                                            <el-form-item label="体检机构名" prop="name">
-                                                <el-input v-model="formData.name"/>
-                                            </el-form-item>
-                                        </el-col>
-                                        <el-col :span="12">
-                                            <el-form-item label="联系电话" prop="telephone">
-                                                <el-input v-model="formData.telephone"/>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="24">
-                                            <el-form-item label="经纬度">
-                                                <el-input v-model="formData.point" type="textarea"></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="12">
-                                            <el-form-item label="详细地址">
-                                                <el-input v-model="formData.address" type="textarea"></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                </el-form>
+                    <el-form :model="formData" :rules="rules" label-position="right" label-width="100px">
+                        <el-row>
+                            <el-col :span="12">
+                                <el-form-item label="体检机构名" prop="name">
+                                    <el-input v-model="formData.name"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="联系电话" prop="telephone">
+                                    <el-input v-model="formData.telephone"/>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="24">
+                                <el-form-item label="经纬度">
+                                    <el-input v-model="formData.point" type="textarea"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="12">
+                                <el-form-item label="详细地址">
+                                    <el-input v-model="formData.address" type="textarea"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="dialogFormVisible = false">取消</el-button>
                         <el-button type="primary" @click="handleAdd()">确定</el-button>
@@ -143,7 +152,7 @@
                 </el-dialog>
 
                 要查询的地址：<input id="text_" type="text" value="" style="margin-right:100px;" placeholder="请输入地址"/>
-                所查地址经纬度：<input id="result_" type="text" />
+                所查地址经纬度：<input id="result_" type="text"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="button" value="查询" onclick="searchByStationName();"/>
                 <div id="container"
@@ -160,34 +169,34 @@
             <!-- 编辑标签弹层 -->
             <div class="edit-form">
                 <el-dialog title="编辑体检机构地址" :visible.sync="dialogFormVisible4Edit">
-                                <el-form :model="formData" :rules="rules" label-position="right" label-width="100px">
-                                    <el-row>
-                                        <el-col :span="12">
-                                            <el-form-item label="体检机构名" prop="name">
-                                                <el-input v-model="formData.name"/>
-                                            </el-form-item>
-                                        </el-col>
-                                        <el-col :span="12">
-                                            <el-form-item label="联系电话" prop="telephone">
-                                                <el-input v-model="formData.telephone"/>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="10">
-                                            <el-form-item label="经纬度">
-                                                <el-input v-model="formData.point" type="textarea"></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="12">
-                                            <el-form-item label="详细地址">
-                                                <el-input v-model="formData.address" type="textarea"></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                </el-form>
+                    <el-form :model="formData" :rules="rules" label-position="right" label-width="100px">
+                        <el-row>
+                            <el-col :span="12">
+                                <el-form-item label="体检机构名" prop="name">
+                                    <el-input v-model="formData.name"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="联系电话" prop="telephone">
+                                    <el-input v-model="formData.telephone"/>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10">
+                                <el-form-item label="经纬度">
+                                    <el-input v-model="formData.point" type="textarea"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="12">
+                                <el-form-item label="详细地址">
+                                    <el-input v-model="formData.address" type="textarea"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="dialogFormVisible4Edit = false">取消</el-button>
                         <el-button type="primary" @click="handleEdit()">确定</el-button>
@@ -203,21 +212,21 @@
 <script>
     var vue = new Vue({
         el: '#app',
-        data:{
-            activeName:'first',//添加/编辑窗口Tab标签名称
+        data: {
+            activeName: 'first',//添加/编辑窗口Tab标签名称
             pagination: {//分页相关属性
                 currentPage: 1,
-                pageSize:10,
-                total:100,
-                queryString:null,
+                pageSize: 10,
+                total: 100,
+                queryString: null,
             },
             dataList: [],//列表数据
             formData: {},//表单数据
             dialogFormVisible: false,//控制添加窗口显示/隐藏
             dialogFormVisible4Edit: false,//控制编辑窗口显示/隐藏
             rules: {//校验规则
-                name: [{ required: true, message: '体检机构名称为必填项', trigger: 'blur' }],
-                telephone: [{ required: true, message: '手机号为必填项', trigger: 'blur' }]
+                name: [{required: true, message: '体检机构名称为必填项', trigger: 'blur'}],
+                telephone: [{required: true, message: '手机号为必填项', trigger: 'blur'}]
             }
         },
         created() {
@@ -241,13 +250,13 @@
                 })
             },
             //添加
-            handleAdd () {
-                axios.post('/address/add.do',this.formData).then(response=>{
+            handleAdd() {
+                axios.post('/address/add.do', this.formData).then(response => {
                     this.$message({
                         message: response.data.message,
-                        type: response.data.flag?"success":"error"
+                        type: response.data.flag ? "success" : "error"
                     });
-                    if(response.data.flag){
+                    if (response.data.flag) {
                         this.dialogFormVisible = false;
                         this.findPage();
                     }
@@ -327,37 +336,39 @@
 
 <script type="text/javascript">
     //百度地图
-   var map = new BMap.Map("container");
-   map.centerAndZoom("深圳宝安区", 12);
-   map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
-   map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+    var map = new BMap.Map("container");
+    map.centerAndZoom("深圳宝安区", 12);
+    map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
+    map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
 
-   map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
-   map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
-   map.addControl(new BMap.OverviewMapControl({ isOpen: true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT }));   //右下角，打开
+    map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+    map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+    map.addControl(new BMap.OverviewMapControl({isOpen: true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT}));   //右下角，打开
 
-   var localSearch = new BMap.LocalSearch(map);
-   localSearch.enableAutoViewport(); //允许自动调节窗体大小
+    var localSearch = new BMap.LocalSearch(map);
+    localSearch.enableAutoViewport(); //允许自动调节窗体大小
 
-   function searchByStationName() {
-       // map.clearOverlays();//清空原来的标注
-       var keyword = document.getElementById("text_").value;
-       localSearch.setSearchCompleteCallback(function (searchResult) {
-           var poi = searchResult.getPoi(0);
-           document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat;
-           map.centerAndZoom(poi.point, 13);
-           var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
-           map.addOverlay(marker);
-           var content = document.getElementById("text_").value + "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
-           // 经度
-           console.log("经度:"+ poi.point.lng);
-           // 纬度
-           console.log("纬度:"+ poi.point.lat);
-           var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
-           marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
-           // marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-       });
-       localSearch.search(keyword);
-   }
+    function searchByStationName() {
+        // map.clearOverlays();//清空原来的标注
+        var keyword = document.getElementById("text_").value;
+        localSearch.setSearchCompleteCallback(function (searchResult) {
+            var poi = searchResult.getPoi(0);
+            document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat;
+            map.centerAndZoom(poi.point, 13);
+            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+            map.addOverlay(marker);
+            var content = document.getElementById("text_").value + "<br/><br/>经度：" + poi.point.lng + "<br/>纬度：" + poi.point.lat;
+            // 经度
+            console.log("经度:" + poi.point.lng);
+            // 纬度
+            console.log("纬度:" + poi.point.lat);
+            var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + content + "</p>");
+            marker.addEventListener("click", function () {
+                this.openInfoWindow(infoWindow);
+            });
+            // marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        });
+        localSearch.search(keyword);
+    }
 </script>
 </html>
