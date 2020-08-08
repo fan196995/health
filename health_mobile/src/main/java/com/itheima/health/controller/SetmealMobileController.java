@@ -21,21 +21,65 @@ import java.util.List;
 @RequestMapping("/setmeal")
 public class SetmealMobileController {
 
+    @Autowired
+    private JedisPool jedisPool;
     @Reference
     private SetmealService setmealService;
-
-    @GetMapping("/getSetmeal")
+  @GetMapping("/getSetmeal")
     public Result getSetmeal(){
-       List<Setmeal> list= setmealService.findAll();
-       list.forEach(s->s.setImg(QiNiuUtils.DOMAIN+s.getImg()));
-        return new Result(true, MessageConstant.GET_SETMEAL_LIST_SUCCESS,list);
+        try {
+            Jedis jedis = jedisPool.getResource();
+            //获取setmeal_list的json格式数据
+            String setmeal_list = jedis.get("setmeal_list");
+            //判断
+            if (setmeal_list==null||setmeal_list.length()==0){
+                //没有数据从数据库查
+                List<Setmeal> list = setmealService.findAll();
+                 setmeal_list = JSON.toJSONString(list);
+                 jedis.set("setmeal_list",setmeal_list);
+                list.forEach(e->{e.setImg(e.getImg());});
+                return new Result(true,MessageConstant.GET_SETMEAL_LIST_SUCCESS,list);
+            }else {
+                List<Setmeal> list = JSON.parseArray(setmeal_list, Setmeal.class);
+                list.forEach(e->{e.setImg(e.getImg());});
+                return new Result(true,MessageConstant.GET_SETMEAL_LIST_SUCCESS,list);
+            }
+
+        }catch (Exception e){
+                return  new Result(false,MessageConstant.GET_SETMEAL_LIST_FAIL);
+        }
+
+
     }
 
-    @PostMapping("/findDetailById")
-    public Result findDetailById(int id){
-        Setmeal setmeal = setmealService.findDetailById(id);
-        setmeal.setImg(QiNiuUtils.DOMAIN+setmeal.getImg());
-        return new Result(true,MessageConstant.QUERY_SETMEAL_SUCCESS,setmeal);
+
+    @GetMapping("/findDetailById")
+    public Result findDetailById(int id) {
+        try {
+            Jedis jedis = jedisPool.getResource();
+            String setmealDetail = "setmealDetail_" + id;
+            //获取套餐详情的json格式数据
+            String setmealDetail_id = jedis.get(setmealDetail);
+            //判断
+            if (setmealDetail_id == null || setmealDetail_id.length() == 0) {
+                //从数据库查询详情
+                Setmeal setmeal = setmealService.findDetailById(id);
+                //转成json
+                String setmeal_Detail = JSON.toJSONString(setmeal);
+                //存入redis
+                jedis.set(setmealDetail, setmeal_Detail);
+                setmeal.setImg(QiNiuUtils.DOMAIN + setmeal.getImg());
+                return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setmeal);
+            } else {
+                Setmeal setmeal = JSON.parseObject(setmealDetail_id, Setmeal.class);
+                setmeal.setImg(QiNiuUtils.DOMAIN + setmeal.getImg());
+                return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setmeal);
+            }
+
+        } catch (Exception e) {
+            return new Result(false, MessageConstant.QUERY_SETMEAL_FAIL);
+        }
+
     }
 
     @PostMapping("/findDetailById2")
