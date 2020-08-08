@@ -109,6 +109,8 @@ public class OrderController {
             Date orderDate = (Date) map.get("orderDate");
             document.add(new Paragraph("体检日期:" + DateUtils.parseDate2String(orderDate, "yyyy-MM-dd"), font));
             document.add(new Paragraph("预约类型:" + (String) map.get("orderType"), font));
+            document.add(new Paragraph("体检中心:" + (String) map.get("addressName"), font));
+            document.add(new Paragraph("体检中心地址:" + (String) map.get("address"), font));
 
             //表头
             Table table = new Table(3);
