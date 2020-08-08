@@ -1,15 +1,19 @@
 package com.itheima.health.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.SetmealService;
 import com.itheima.health.utils.QiNiuUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 
@@ -25,6 +29,7 @@ public class SetmealMobileController {
     private JedisPool jedisPool;
     @Reference
     private SetmealService setmealService;
+
   @GetMapping("/getSetmeal")
     public Result getSetmeal(){
         try {
@@ -37,11 +42,11 @@ public class SetmealMobileController {
                 List<Setmeal> list = setmealService.findAll();
                  setmeal_list = JSON.toJSONString(list);
                  jedis.set("setmeal_list",setmeal_list);
-                list.forEach(e->{e.setImg(e.getImg());});
+                list.forEach(e->{e.setImg(QiNiuUtils.DOMAIN+e.getImg());});
                 return new Result(true,MessageConstant.GET_SETMEAL_LIST_SUCCESS,list);
             }else {
                 List<Setmeal> list = JSON.parseArray(setmeal_list, Setmeal.class);
-                list.forEach(e->{e.setImg(e.getImg());});
+                list.forEach(e->{e.setImg(QiNiuUtils.DOMAIN+e.getImg());});
                 return new Result(true,MessageConstant.GET_SETMEAL_LIST_SUCCESS,list);
             }
 
@@ -49,9 +54,7 @@ public class SetmealMobileController {
                 return  new Result(false,MessageConstant.GET_SETMEAL_LIST_FAIL);
         }
 
-
     }
-
 
     @GetMapping("/findDetailById")
     public Result findDetailById(int id) {
