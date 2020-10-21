@@ -31,4 +31,6 @@ public interface RoleService {
     void update(Role role, Integer[] permissionIds, Integer[] menuIds);
 
     void deleteById(int id) throws HealthException;
+
+    List<Integer> findRoleMenuIds(int id);
 }

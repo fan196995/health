@@ -41,4 +41,6 @@ public interface RoleDao {
     int findUserByRoleId(int id);
 
     void deleteById(int id);
+
+    List<Integer> findRoleMenuIds(int id);
 }

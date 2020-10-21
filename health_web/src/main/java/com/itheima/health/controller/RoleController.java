@@ -70,7 +70,11 @@ public class RoleController {
         return new Result(true,MessageConstant.DELETE_ROLE_SUCCESS);
     }
 
-
+    @GetMapping(value = "/findRoleMenuIds")
+    public Result findRoleMenuIds(int id){
+        List<Integer> roleMenuIds = roleService.findRoleMenuIds(id);
+        return new Result(true,MessageConstant.QUERY_MENU_SUCCESS,roleMenuIds);
+    }
 }
 
 

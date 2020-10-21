@@ -29,78 +29,33 @@
                 </div>
             </div>
         </div>
-        <div id="app1">
-            <form>
-                请输入开始日期<input v-model="beginDate" type="text" name="date" value="格式为yyyy-MM">
-                请输入结束日期<input v-model="endDate" type="text" name="date" value="格式为yyyy-MM">
-                <input type="submit" @click="check()">
-            </form>
-        </div>
-
     </body>
     <!-- 引入组件库 -->
     <script src="../js/vue.js"></script>
     <script src="../js/axios-0.18.0.js"></script>
-    <!-- 引入 ECharts 文件 -->
-    <script src="../plugins/echarts/echarts.js"></script>
-
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart1 = echarts.init(document.getElementById('chart1'));
+
         // 使用刚指定的配置项和数据显示图表。
         //myChart.setOption(option);
+
         axios.get("/report/getMemberReport.do").then((res)=>{
             if(res.data.flag) {
-                myChart1.setOption(
-                    {
-                        title: {
-                            text: '会员数量'
-                        },
-                        tooltip: {},
-                        legend: {
-                            data: ['会员数量']
-                        },
-                        xAxis: {
-                            data: res.data.data.months
-                        },
-                        yAxis: {
-                            type: 'value'
-                        },
-                        series: [{
-                            name: '会员数量',
-                            type: 'line',
-                            data: res.data.data.memberCount
-                        }]
-                    });
-            }else{
-                this.$message.error(res.data.message);
-            }
-        });
-
-        var vue = new Vue({
-            el:'#app1',
-            data:{
-                beginDate:'',
-                endDate:''
-            },
-            methods:{
-                check(){
-                    axios.post("/report/getMemberCountBetweenDate.do?beginDate="+this.beginDate+"&endDate="+this.endDate).then((res)=>{
-                        if(res.data.flag) {
-                            myChart1.setOption(
+            myChart1.setOption(
                                 {
                                     title: {
                                         text: '会员数量'
                                     },
                                     tooltip: {},
                                     legend: {
-                                        data: ['会员数量']
+                                        data:['会员数量']
                                     },
                                     xAxis: {
                                         data: res.data.data.months
                                     },
                                     yAxis: {
-                                        type: 'value'
+                                        type:'value'
                                     },
                                     series: [{
                                         name: '会员数量',
@@ -108,14 +63,9 @@
                                         data: res.data.data.memberCount
                                     }]
                                 });
-                        }else{
-                            this.$message.error(res.data.message);
-                        }
-                    });
-                }
+            }else{
+                this.$message.error(res.data.message);
             }
-        })
-
+        });
     </script>
-
 </html>

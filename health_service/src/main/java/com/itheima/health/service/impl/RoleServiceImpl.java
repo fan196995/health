@@ -106,4 +106,11 @@ public class RoleServiceImpl implements RoleService {
         roleDao.deleteRolePermission(id);
         roleDao.deleteById(id);
     }
+
+
+    @Override
+    public List<Integer> findRoleMenuIds(int id) {
+        List<Integer> roleMenuIds =  roleDao.findRoleMenuIds(id);
+        return roleMenuIds;
+    }
 }

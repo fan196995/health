@@ -53,10 +53,9 @@ public class SetmealMobileController {
         }catch (Exception e){
                 return  new Result(false,MessageConstant.GET_SETMEAL_LIST_FAIL);
         }
-
     }
 
-    @GetMapping("/findDetailById")
+    @PostMapping("/findDetailById")
     public Result findDetailById(int id) {
         try {
             Jedis jedis = jedisPool.getResource();

@@ -22,4 +22,11 @@ public class MenuServiceImpl implements MenuService {
     public List<Menu> findAll() {
         return menuDao.findAll();
     }
+
+    @Override
+    public List<Menu> getcode() {
+        return menuDao.findByUsername();
+    }
+
+
 }

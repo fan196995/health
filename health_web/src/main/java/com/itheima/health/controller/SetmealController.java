@@ -106,7 +106,7 @@ public class SetmealController {
         return new Result(true, MessageConstant.DELETE_SETMEAL_SUCCESS);
     }
 
-    @PostMapping(value = "/findById")
+    @GetMapping(value = "/findById")
     public Result findById(int id){
         Setmeal setmeal = setmealService.findById(id);
         String img = setmeal.getImg();

@@ -7,4 +7,8 @@
     <select id="findAll" resultType="com.itheima.health.pojo.Menu">
         select * from  t_menu
     </select>
+
+    <select id="findByUsername" parameterType="String" resultType="Menu">
+       select id, name, parentMenuId from t_menu
+    </select>
 </mapper>

@@ -9,6 +9,8 @@ import java.util.List;
  * @date 2020/8/6 12:02
  */
 public interface MenuDao {
+
     List<Menu> findAll();
 
+    List<Menu> findByUsername();
 }

@@ -12,4 +12,6 @@ public interface MenuService {
 
     List<Menu> findAll();
 
+    List<Menu> getcode();
+
 }

@@ -61,6 +61,24 @@
                 <el-aside width="200px">
                     <el-menu>
                         <el-submenu v-for="menu in menuList" :index="menu.path">
+                                                <template slot="title">
+                                                    <i class="fa" :class="menu.icon"></i>
+                                                    {{menu.title}}
+                                                </template>
+                                                <template v-for="child in menu.children">
+                                                    <el-menu-item :index="child.path">
+                                                        <a :href="child.linkUrl" target="right">{{child.title}}</a>
+                                                    </el-menu-item>
+                                                </template>
+                                            </el-submenu>
+                        </el-menu>
+
+                    <!--<el-tree
+                            :data="menuList"
+                            :props="defaultProps"
+                            accordion
+                            @node-click="handleNodeClick">-->
+                        <el-submenu v-for="menu in menuList" :index="menu.path">
                             <template slot="title">
                                 <i class="fa" :class="menu.icon"></i>
                                 {{menu.title}}
@@ -71,11 +89,22 @@
                                 </el-menu-item>
                             </template>
                         </el-submenu>
-                    </el-menu>
+                 <!--   </el-tree>-->
+
+                    <!--<el-tree :data="menuList"
+                             :props="defaultProps"
+                             @node-click="handleNodeClick"
+                             node-key="id"
+                             show-checkbox=true>
+
+                    </el-tree>-->
+
                 </el-aside>
                 <el-container>
                     <iframe name="right" class="el-main" src="ordersetting.html" width="100%" height="580px" frameborder="0"></iframe>
                 </el-container>
+
+
             </el-container>
         </el-container>
     </div>
@@ -241,13 +270,24 @@
                         }
                     ]
                 },
-            ]
+            ],
+            defaultProps: {
+                label: 'name',
+                children:'childList'
+            }
         },
         created: function () {
             // 获取登陆用户名
             axios.get('/user/getUsername.do').then(res => {
                 if(res.data.flag){
                     this.loginUsername = res.data.data;
+                }else{
+                    this.$message.error(res.data.message);
+                }
+            });
+            axios.get('/menu/tree.do').then(res => {
+                if(res.data.flag){
+                    this.menuList = res.data.data;
                 }else{
                     this.$message.error(res.data.message);
                 }
@@ -259,6 +299,9 @@
                 });
                 window.location.reload()
             },
+            handleNodeClick(data) {
+                console.log(data);
+            }
         }
     });
 

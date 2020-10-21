@@ -76,6 +76,7 @@ public interface MessageConstant {
     static final String EDIT_ROLE_SUCCESS = "角色修改成功";
     static final String QUERY_PERMISSION_SUCCESS = "权限查询成功";
     static final String QUERY_MENU_SUCCESS = "菜单查询成功";
+    static final String QUERY_MENU_FAIL = "菜单查询失败";
     static final String DELETE_ROLE_SUCCESS = "角色删除成功";
     static final String ROLE_IN_USE = "该角色被使用不能删除";
     static final String ADDRESS_IN_USE = "该地址被使用不能删除";
